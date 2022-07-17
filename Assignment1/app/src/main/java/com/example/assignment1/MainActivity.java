@@ -4,12 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.InputFilter;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.regex.Pattern;
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // failure
         builder.setTitle("Error");
         builder.setNegativeButton(
-                "Retry",
+                "Cancel",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
