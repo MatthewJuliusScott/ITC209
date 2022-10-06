@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.itc209.assignment4.model.Intake;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class IntakeDao {
 
@@ -21,7 +23,7 @@ public class IntakeDao {
 
     private DatabaseHelper dbHelper;
 
-    private Context context;
+    private final Context context;
 
     private SQLiteDatabase database;
 
@@ -40,17 +42,20 @@ public class IntakeDao {
         dbHelper.close();
     }
 
-    public Intake findIntakesByTime(Date start, Date end) throws Exception {
+    public List<Intake> findIntakesByTime(Date start, Date end) throws Exception {
+        List<Intake> intakes = new ArrayList<>();
         String[] columns = new String[] { TIME, FOOD_NAME };
         Cursor cursor = database.query(TABLE_NAME, columns, TIME + " > ? AND " + TIME + " < ?", new String[]{Long.toString(start.getTime()), Long.toString(end.getTime())}, null, null, null);
         if (cursor != null) {
-            cursor.moveToFirst();
-            int timeIndex = cursor.getColumnIndexOrThrow(TIME);
-            int foodNameIndex = cursor.getColumnIndexOrThrow(FOOD_NAME);
-            int gramsIndex = cursor.getColumnIndexOrThrow(GRAMS);
-            return new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex)), cursor.getInt(gramsIndex));
+            while (cursor.moveToNext()) {
+                cursor.moveToFirst();
+                int timeIndex = cursor.getColumnIndexOrThrow(TIME);
+                int foodNameIndex = cursor.getColumnIndexOrThrow(FOOD_NAME);
+                int gramsIndex = cursor.getColumnIndexOrThrow(GRAMS);
+                intakes.add(new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex)), cursor.getInt(gramsIndex)));
+            }
         }
-        return null;
+        return intakes;
     }
 
     public void deleteIntake(Date date, String foodName) {

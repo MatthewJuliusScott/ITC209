@@ -7,14 +7,14 @@ import com.itc209.assignment4.model.Constraint;
 
 public class ConstraintController {
 
-    private Context context;
+    private final Context context;
 
     public ConstraintController(Context context) {
         this.context = context;
         constraintDao = new ConstraintDao(context);
     }
 
-    private ConstraintDao constraintDao;
+    private final ConstraintDao constraintDao;
 
     public Constraint findConstraintById(long id) throws Exception {
         return constraintDao.findConstraintById(id);

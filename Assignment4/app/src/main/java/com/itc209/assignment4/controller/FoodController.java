@@ -19,7 +19,7 @@ import java.util.List;
 
 public class FoodController {
 
-    private Context context;
+    private final Context context;
 
     public FoodController(Context context) {
         this.context = context;

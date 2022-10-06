@@ -13,24 +13,11 @@ public class MainController {
 
     private Context context;
 
-    private ConstraintController constraintController = new ConstraintController(context);
-    private FoodController foodController = new FoodController(context);
-    private IntakeController intakeController = new IntakeController(context, foodController);
+    private final ConstraintController constraintController = new ConstraintController(context);
+    private final FoodController foodController = new FoodController(context);
+    private final IntakeController intakeController = new IntakeController(context, foodController);
 
     public void sendNotification(Notification notification) {
         // TODO implement
-    }
-
-    public void addToIntake(Food food, Time time) {
-        // TODO implement
-    }
-
-    public void removeFromIntake(Food food, Time time) {
-        // TODO implement
-    }
-
-    public Iterable<Intake> getIntakes(Time start, Time end) {
-        // TODO implement
-        return null;
     }
 }
