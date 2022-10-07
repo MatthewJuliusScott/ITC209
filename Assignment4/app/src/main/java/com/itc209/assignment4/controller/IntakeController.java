@@ -24,7 +24,7 @@ public class IntakeController {
         this.intakeDao = new IntakeDao(this.context, foodController.getFoodDao());
     }
 
-    public List<Intake> findIntakesByTime(Date start, Date end) throws Exception {
+    public List<Intake> getIntakesByTime(Date start, Date end) throws Exception {
         return intakeDao.findIntakesByTime(start, end);
     }
 
@@ -37,7 +37,7 @@ public class IntakeController {
     }
 
     public Food getTotalFood(Date start, Date end) throws Exception {
-        List<Intake> intakes = findIntakesByTime(start, end);
+        List<Intake> intakes = getIntakesByTime(start, end);
         Food total = new Food();
         total.setName("total");
         for (Intake intake : intakes) {

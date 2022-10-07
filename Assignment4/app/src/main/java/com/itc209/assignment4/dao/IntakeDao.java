@@ -42,28 +42,44 @@ public class IntakeDao {
     }
 
     public List<Intake> findIntakesByTime(Date start, Date end) throws Exception {
-        List<Intake> intakes = new ArrayList<>();
-        String[] columns = new String[] { TIME, FOOD_NAME };
-        Cursor cursor = database.query(TABLE_NAME, columns, TIME + " > ? AND " + TIME + " < ?", new String[]{Long.toString(start.getTime()), Long.toString(end.getTime())}, null, null, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                cursor.moveToFirst();
-                int timeIndex = cursor.getColumnIndexOrThrow(TIME);
-                int foodNameIndex = cursor.getColumnIndexOrThrow(FOOD_NAME);
-                intakes.add(new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex))));
+        try {
+            open();
+            List<Intake> intakes = new ArrayList<>();
+            String[] columns = new String[]{TIME, FOOD_NAME};
+            Cursor cursor = database.query(TABLE_NAME, columns, TIME + " > ? AND " + TIME + " < ?", new String[]{Long.toString(start.getTime()), Long.toString(end.getTime())}, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    cursor.moveToFirst();
+                    int timeIndex = cursor.getColumnIndexOrThrow(TIME);
+                    int foodNameIndex = cursor.getColumnIndexOrThrow(FOOD_NAME);
+                    intakes.add(new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex))));
+                }
             }
+            return intakes;
+        } finally {
+            close();
         }
-        return intakes;
     }
 
     public void deleteIntake(Date date, String foodName) {
-        database.delete(TABLE_NAME, TIME + "= ? AND " + FOOD_NAME + " = ?", new String[]{Long.toString(date.getTime()), foodName});
+        try {
+            open();
+            database.delete(TABLE_NAME, TIME + "= ? AND " + FOOD_NAME + " = ?", new String[]{Long.toString(date.getTime()), foodName});
+        } finally {
+            close();
+        }
+
     }
 
     public void saveIntake(Intake intake) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TIME, intake.getDate().getTime());
-        contentValues.put(FOOD_NAME, intake.getFood().getName());
-        database.replace(TABLE_NAME, null, contentValues);
+        try {
+            open();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TIME, intake.getDate().getTime());
+            contentValues.put(FOOD_NAME, intake.getFood().getName());
+            database.replace(TABLE_NAME, null, contentValues);
+        } finally {
+            close();
+        }
     }
 }

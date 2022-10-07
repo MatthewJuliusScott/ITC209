@@ -28,7 +28,7 @@ public class FoodDao {
     private SQLiteDatabase database;
 
     public FoodDao(Context context) {
-        context = this.context;
+        this.context = context;
     }
 
     public FoodDao open() throws SQLException {
@@ -42,50 +42,70 @@ public class FoodDao {
     }
 
     public Food findFoodByName(String name) {
-        String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
-        try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " = ?", new String[]{name}, null, null, null)) {
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int nameIndex = cursor.getColumnIndexOrThrow(NAME);
-                int caloriesIndex = cursor.getColumnIndexOrThrow(CALORIES);
-                int fatIndex = cursor.getColumnIndexOrThrow(FAT);
-                int proteinIndex = cursor.getColumnIndexOrThrow(PROTEIN);
-                int carbohydratesIndex = cursor.getColumnIndexOrThrow(CARBOHYDRATES);
-                return new Food(cursor.getString(nameIndex), cursor.getInt(caloriesIndex), cursor.getFloat(fatIndex), cursor.getFloat(proteinIndex), cursor.getFloat(carbohydratesIndex));
-            }
-        }
-        return null;
-    }
-
-    public void deleteFoodByName(String name) {
-        database.delete(TABLE_NAME, NAME + "= ?", new String[]{name});
-    }
-
-    public void saveFood(Food food) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME, food.getName());
-        contentValues.put(CALORIES, food.getCalories());
-        contentValues.put(FAT, food.getFat());
-        contentValues.put(PROTEIN, food.getProtein());
-        contentValues.put(CARBOHYDRATES, food.getCarbohydrates());
-        database.replace(TABLE_NAME, null, contentValues);
-    }
-
-    public List<Food> findFoodsByKeyword(String keyword) {
-        List<Food> foods = new ArrayList<>();
-        String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
-        try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " LIKE ?", new String[]{"%" + keyword + "%"}, null, null, null)) {
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
+        try {
+            open();
+            String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
+            try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " = ?", new String[]{name}, null, null, null)) {
+                if (cursor != null) {
+                    cursor.moveToFirst();
                     int nameIndex = cursor.getColumnIndexOrThrow(NAME);
                     int caloriesIndex = cursor.getColumnIndexOrThrow(CALORIES);
                     int fatIndex = cursor.getColumnIndexOrThrow(FAT);
                     int proteinIndex = cursor.getColumnIndexOrThrow(PROTEIN);
                     int carbohydratesIndex = cursor.getColumnIndexOrThrow(CARBOHYDRATES);
-                    foods.add(new Food(cursor.getString(nameIndex), cursor.getInt(caloriesIndex), cursor.getFloat(fatIndex), cursor.getFloat(proteinIndex), cursor.getFloat(carbohydratesIndex)));
+                    return new Food(cursor.getString(nameIndex), cursor.getInt(caloriesIndex), cursor.getFloat(fatIndex), cursor.getFloat(proteinIndex), cursor.getFloat(carbohydratesIndex));
                 }
             }
+            return null;
+        } finally {
+            close();
         }
-        return foods;
+    }
+
+    public void deleteFoodByName(String name) {
+        try {
+            open();
+            database.delete(TABLE_NAME, NAME + "= ?", new String[]{name});
+        } finally {
+            close();
+        }
+    }
+
+    public void saveFood(Food food) {
+        try {
+            open();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME, food.getName());
+            contentValues.put(CALORIES, food.getCalories());
+            contentValues.put(FAT, food.getFat());
+            contentValues.put(PROTEIN, food.getProtein());
+            contentValues.put(CARBOHYDRATES, food.getCarbohydrates());
+            database.replace(TABLE_NAME, null, contentValues);
+        } finally {
+            close();
+        }
+    }
+
+    public List<Food> findFoodsByKeyword(String keyword) {
+        try {
+            open();
+            List<Food> foods = new ArrayList<>();
+            String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
+            try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " LIKE ?", new String[]{"%" + keyword + "%"}, null, null, null)) {
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        int nameIndex = cursor.getColumnIndexOrThrow(NAME);
+                        int caloriesIndex = cursor.getColumnIndexOrThrow(CALORIES);
+                        int fatIndex = cursor.getColumnIndexOrThrow(FAT);
+                        int proteinIndex = cursor.getColumnIndexOrThrow(PROTEIN);
+                        int carbohydratesIndex = cursor.getColumnIndexOrThrow(CARBOHYDRATES);
+                        foods.add(new Food(cursor.getString(nameIndex), cursor.getInt(caloriesIndex), cursor.getFloat(fatIndex), cursor.getFloat(proteinIndex), cursor.getFloat(carbohydratesIndex)));
+                    }
+                }
+            }
+            return foods;
+        } finally {
+            close();
+        }
     }
 }

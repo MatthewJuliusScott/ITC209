@@ -1,12 +1,18 @@
 package com.itc209.assignment4;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -14,7 +20,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.itc209.assignment4.controller.MainController;
+import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
+
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainController = new MainController(getApplicationContext());
-        resetButtons();
+        try {
+            resetButtons();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void resetButtons() {
+    private void resetButtons() throws Exception {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -42,8 +56,22 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button_remove_food_from_intake);
         button.setMaxWidth(displayMetrics.widthPixels / 4);
 
+        // grey out remove food from intake if there is no intake for today
+        List<Intake> intakes = mainController.getIntakeController().getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
+        if (intakes.size() > 0) {
+            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.negative, null)));
+            button.setEnabled(true);
+        } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+            button.setEnabled(false);
+        }
+
         button = findViewById(R.id.button_set_daily_goals);
         button.setMaxWidth(displayMetrics.widthPixels / 4);
+
+
+
+
     }
 
     public void sendNotification(Notification notification) {

@@ -41,47 +41,68 @@ public class ConstraintDao {
     }
 
     public Constraint findConstraintById(long id) throws Exception {
-        String[] columns = new String[]{ID, IS_GOAL, AMOUNT, TYPE};
-        try (Cursor cursor = database.query(TABLE_NAME, columns, ID + " = ?", new String[]{Long.toString(id)}, null, null, null)) {
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idIndex = cursor.getColumnIndexOrThrow(ID);
-                int goalIndex = cursor.getColumnIndexOrThrow(IS_GOAL);
-                int amountIndex = cursor.getColumnIndexOrThrow(AMOUNT);
-                int typeIndex = cursor.getColumnIndexOrThrow(TYPE);
-                return new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]);
-            }
-        }
-        return null;
-    }
-
-    public void deleteConstraint(long id) {
-        database.delete(TABLE_NAME, ID + "= ?", new String[]{Long.toString(id)});
-    }
-
-    public void saveConstraint(Constraint constraint) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(IS_GOAL, constraint.getId());
-        contentValues.put(IS_GOAL, constraint.isGoal());
-        contentValues.put(AMOUNT, constraint.getAmount());
-        contentValues.put(TYPE, constraint.getType().ordinal());
-        database.replace(TABLE_NAME, null, contentValues);
-    }
-
-    public List<Constraint> getConstraints() {
-        List<Constraint> constraints = new ArrayList<>();
-        String[] columns = new String[]{ID, IS_GOAL, AMOUNT, TYPE};
-        try (Cursor cursor = database.query(TABLE_NAME, columns, null, null, null, null, null)) {
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
+        try {
+            open();
+            String[] columns = new String[]{ID, IS_GOAL, AMOUNT, TYPE};
+            try (Cursor cursor = database.query(TABLE_NAME, columns, ID + " = ?", new String[]{Long.toString(id)}, null, null, null)) {
+                if (cursor != null) {
+                    cursor.moveToFirst();
                     int idIndex = cursor.getColumnIndexOrThrow(ID);
                     int goalIndex = cursor.getColumnIndexOrThrow(IS_GOAL);
                     int amountIndex = cursor.getColumnIndexOrThrow(AMOUNT);
                     int typeIndex = cursor.getColumnIndexOrThrow(TYPE);
-                    constraints.add(new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]));
+                    return new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]);
                 }
             }
+            return null;
+        } finally {
+            close();
         }
-        return constraints;
+
+    }
+
+    public void deleteConstraint(long id) {
+        try {
+            open();
+            database.delete(TABLE_NAME, ID + "= ?", new String[]{Long.toString(id)});
+        } finally {
+            close();
+        }
+    }
+
+    public void saveConstraint(Constraint constraint) {
+        try {
+            open();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(IS_GOAL, constraint.getId());
+            contentValues.put(IS_GOAL, constraint.isGoal());
+            contentValues.put(AMOUNT, constraint.getAmount());
+            contentValues.put(TYPE, constraint.getType().ordinal());
+            database.replace(TABLE_NAME, null, contentValues);
+        } finally {
+            close();
+        }
+    }
+
+    public List<Constraint> getConstraints() {
+        try {
+            open();
+            List<Constraint> constraints = new ArrayList<>();
+            String[] columns = new String[]{ID, IS_GOAL, AMOUNT, TYPE};
+            try (Cursor cursor = database.query(TABLE_NAME, columns, null, null, null, null, null)) {
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        int idIndex = cursor.getColumnIndexOrThrow(ID);
+                        int goalIndex = cursor.getColumnIndexOrThrow(IS_GOAL);
+                        int amountIndex = cursor.getColumnIndexOrThrow(AMOUNT);
+                        int typeIndex = cursor.getColumnIndexOrThrow(TYPE);
+                        constraints.add(new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]));
+                    }
+                }
+            }
+            return constraints;
+        } finally {
+            close();
+        }
     }
 }

@@ -20,7 +20,6 @@ import java.sql.Time;
 public class MainController {
 
     private final Context context;
-
     private final FoodController foodController;
     private final IntakeController intakeController;
     private final ConstraintController constraintController;
@@ -30,5 +29,17 @@ public class MainController {
         foodController = new FoodController(context);
         intakeController = new IntakeController(context, foodController);
         constraintController = new ConstraintController(context, intakeController);
+    }
+
+    public FoodController getFoodController() {
+        return foodController;
+    }
+
+    public IntakeController getIntakeController() {
+        return intakeController;
+    }
+
+    public ConstraintController getConstraintController() {
+        return constraintController;
     }
 }

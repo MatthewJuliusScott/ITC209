@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class Launcher extends AppCompatActivity {
+public class LauncherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,8 +15,8 @@ public class Launcher extends AppCompatActivity {
         Thread loading = new Thread() {
             public void run() {
                 try {
-                    sleep(3000);
-                    Intent main = new Intent(Launcher.this,MainActivity.class);
+                    sleep(1500);
+                    Intent main = new Intent(LauncherActivity.this,MainActivity.class);
                     startActivity(main);
                     finish();
                 }

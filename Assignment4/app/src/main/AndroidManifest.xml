@@ -23,7 +23,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Launcher"
+            android:name=".LauncherActivity"
             android:exported="true"
             android:label="@string/title_activity_launcher"
             android:theme="@style/Theme.Assignment4">

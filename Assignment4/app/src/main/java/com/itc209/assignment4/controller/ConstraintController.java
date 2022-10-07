@@ -2,6 +2,7 @@ package com.itc209.assignment4.controller;
 
 import android.content.Context;
 
+import com.itc209.assignment4.Utils;
 import com.itc209.assignment4.dao.ConstraintDao;
 import com.itc209.assignment4.model.Constraint;
 import com.itc209.assignment4.model.Food;
@@ -49,18 +50,7 @@ public class ConstraintController {
     public List<Constraint> checkTriggers() throws Exception {
         List<Constraint> triggeredConstraints = new ArrayList<>();
         List<Constraint> constraints = getConstraints();
-        // today
-        Calendar today = new GregorianCalendar();
-        // reset hour, minutes, seconds and millis
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-
-        // next day
-        Calendar tomorrow = (GregorianCalendar) today.clone();
-        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
-        Food totalFood = intakeController.getTotalFood(today.getTime(), tomorrow.getTime());
+        Food totalFood = intakeController.getTotalFood(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
         for (Constraint constraint : constraints) {
             if (constraint.getType().ordinal() == Constraint.Type.CARBOHYDRATE.ordinal()) {
                 if (totalFood.getCarbohydrates() > constraint.getAmount()) {
