@@ -1,16 +1,16 @@
 package com.itc209.assignment4;
 
-import static android.provider.Settings.System.getString;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.Button;
 
 import com.itc209.assignment4.controller.MainController;
@@ -71,5 +71,21 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public void addFoodToIntake(View view) {
+        Intent addFoodToIntake = new Intent(MainActivity.this,AddFoodToIntake.class);
+        startActivity(addFoodToIntake);
+        finish();
+    }
+
+    public void removeFoodFromIntake(View view) {
+        // TODO implement
+    }
+
+    public void setDailyGoals(View view) {
+        Intent setDailyGoals = new Intent(MainActivity.this,SetDailyGoals.class);
+        startActivity(setDailyGoals);
+        finish();
     }
 }
