@@ -8,24 +8,14 @@ public class Intake {
         super();
     }
 
-    public Intake(Date date, Food food, int grams) {
+    public Intake(Date date, Food food) {
         super();
         this.date = date;
         this.food = food;
-        this.grams = grams;
     }
 
     private Date date;
     private Food food;
-    private int grams;
-
-    public int getGrams() {
-        return grams;
-    }
-
-    public void setGrams(int grams) {
-        this.grams = grams;
-    }
 
     public Date getDate() {
         return date;

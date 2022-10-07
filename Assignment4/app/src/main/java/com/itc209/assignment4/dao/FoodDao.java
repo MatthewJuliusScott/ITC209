@@ -71,7 +71,7 @@ public class FoodDao {
         database.replace(TABLE_NAME, null, contentValues);
     }
 
-    public Collection<Food> findFoodsByKeyword(String keyword) {
+    public List<Food> findFoodsByKeyword(String keyword) {
         List<Food> foods = new ArrayList<>();
         String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
         try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " LIKE ?", new String[]{"%" + keyword + "%"}, null, null, null)) {

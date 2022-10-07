@@ -12,10 +12,9 @@ import java.sql.Time;
 public class MainController {
 
     private Context context;
-
-    private final ConstraintController constraintController = new ConstraintController(context);
     private final FoodController foodController = new FoodController(context);
     private final IntakeController intakeController = new IntakeController(context, foodController);
+    private final ConstraintController constraintController = new ConstraintController(context, intakeController);
 
     public void sendNotification(Notification notification) {
         // TODO implement

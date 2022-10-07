@@ -18,7 +18,6 @@ public class IntakeDao {
 
     public static final String TIME = "time";
     public static final String FOOD_NAME = "foodName";
-    public static final String GRAMS = "grams";
     public static final String TABLE_NAME = "intake";
 
     private DatabaseHelper dbHelper;
@@ -51,8 +50,7 @@ public class IntakeDao {
                 cursor.moveToFirst();
                 int timeIndex = cursor.getColumnIndexOrThrow(TIME);
                 int foodNameIndex = cursor.getColumnIndexOrThrow(FOOD_NAME);
-                int gramsIndex = cursor.getColumnIndexOrThrow(GRAMS);
-                intakes.add(new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex)), cursor.getInt(gramsIndex)));
+                intakes.add(new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex))));
             }
         }
         return intakes;
@@ -66,7 +64,6 @@ public class IntakeDao {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TIME, intake.getDate().getTime());
         contentValues.put(FOOD_NAME, intake.getFood().getName());
-        contentValues.put(GRAMS, intake.getGrams());
         database.replace(TABLE_NAME, null, contentValues);
     }
 }

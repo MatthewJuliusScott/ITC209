@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class FoodController {
 
     public FoodController(Context context) {
         this.context = context;
-        setFoodDao(new FoodDao(context));
+        setFoodDao(new FoodDao(this.context));
     }
 
     public FoodDao getFoodDao() {

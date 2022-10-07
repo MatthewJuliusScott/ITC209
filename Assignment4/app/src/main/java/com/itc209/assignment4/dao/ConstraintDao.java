@@ -7,6 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.itc209.assignment4.model.Constraint;
+import com.itc209.assignment4.model.Food;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConstraintDao {
 
@@ -62,5 +66,22 @@ public class ConstraintDao {
         contentValues.put(AMOUNT, constraint.getAmount());
         contentValues.put(TYPE, constraint.getType().ordinal());
         database.replace(TABLE_NAME, null, contentValues);
+    }
+
+    public List<Constraint> getConstraints() {
+        List<Constraint> constraints = new ArrayList<>();
+        String[] columns = new String[]{ID, IS_GOAL, AMOUNT, TYPE};
+        try (Cursor cursor = database.query(TABLE_NAME, columns, null, null, null, null, null)) {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    int idIndex = cursor.getColumnIndexOrThrow(ID);
+                    int goalIndex = cursor.getColumnIndexOrThrow(IS_GOAL);
+                    int amountIndex = cursor.getColumnIndexOrThrow(AMOUNT);
+                    int typeIndex = cursor.getColumnIndexOrThrow(TYPE);
+                    constraints.add(new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]));
+                }
+            }
+        }
+        return constraints;
     }
 }
