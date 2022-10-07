@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">Assignment4</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="app_name">Nutrition Helper</string>
+    <string name="title_activity_launcher">Launcher</string>
+    <string name="channel_name">NutritionHelper Channel</string>
+    <string name="channel_description">Notification Channel for NutritionHelper</string>
+    <string name="button_add_food_to_intake">Add Food</string>
+    <string name="button_remove_food_from_intake">Remove Food</string>
+    <string name="button_set_daily_goals">Daily Goals</string>
+    <string name="daily_food_intake">Daily food intake</string>
 </resources>
