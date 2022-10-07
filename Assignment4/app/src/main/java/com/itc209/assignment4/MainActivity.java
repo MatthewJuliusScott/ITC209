@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendNotification(new Notification());
+        sendNotification(new Notification("New Message", "This is a new message.", Notification.Type.NEUTRAL));
+        sendNotification(new Notification("New Message", "This is a new message.", Notification.Type.NEGATIVE));
+        sendNotification(new Notification("New Message", "This is a new message.", Notification.Type.POSITIVE));
         mainController = new MainController(getApplicationContext());
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -47,12 +49,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendNotification(Notification notification) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.burger_icon)
-                .setContentTitle("My notification")
-                .setContentText("Much longer text that cannot fit one line...")
+                .setContentTitle(notification.getTitle())
+                .setContentText(notification.getMessage())
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("Much longer text that cannot fit one line..."))
+                        .bigText(notification.getMessage()))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        if (notification.getType().ordinal() == Notification.Type.POSITIVE.ordinal()) {
+            builder.setSmallIcon(R.drawable.positive);
+        } else if (notification.getType().ordinal() == Notification.Type.NEGATIVE.ordinal()) {
+            builder.setSmallIcon(R.drawable.negative);
+        } else {
+            builder.setSmallIcon(R.drawable.neutral);
+        }
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(Notification.getID(), builder.build());
     }

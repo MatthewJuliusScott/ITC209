@@ -5,14 +5,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Notification {
 
     private final static AtomicInteger c = new AtomicInteger(0);
+    private String title;
+    private String message;
+    private Type type;
+
+    public Notification(String title, String message, Type type) {
+        super();
+        this.title = title;
+        this.message = message;
+        this.type = type;
+    }
+    public Notification() {
+        super();
+    }
 
     public static int getID() {
         return c.incrementAndGet();
     }
-
-    private String title;
-    private String message;
-    private Type type;
 
     public String getTitle() {
         return title;

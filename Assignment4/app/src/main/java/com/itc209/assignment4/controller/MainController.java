@@ -19,7 +19,7 @@ import java.sql.Time;
 
 public class MainController {
 
-    private Context context;
+    private final Context context;
 
     private final FoodController foodController;
     private final IntakeController intakeController;
