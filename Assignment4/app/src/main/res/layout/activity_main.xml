@@ -6,64 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="112dp"
-        android:layout_height="112dp"
-        android:layout_weight=".20"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="729dp"
-        android:layout_height="303dp"
-        android:contentDescription="@string/daily_food_intake"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </TableLayout>
-
-            <ImageView
-                android:id="@+id/graphPlaceholder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:srcCompat="@tools:sample/avatars" />
-        </LinearLayout>
-    </ScrollView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/titleText"
@@ -78,14 +28,59 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:layout_weight=".20"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/daily_food_intake">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/removeIntakeRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp" />
+
+                <ImageView
+                    android:id="@+id/graphPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -99,10 +94,10 @@
                     android:layout_marginHorizontal="10dp"
                     android:backgroundTint="@color/positive"
                     android:maxLines="1"
+                    android:onClick="addFoodToIntake"
                     android:text="@string/button_add_food_to_intake"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:onClick="addFoodToIntake"/>
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/button_remove_food_from_intake"
@@ -111,10 +106,10 @@
                     android:layout_marginHorizontal="10dp"
                     android:backgroundTint="@color/negative"
                     android:maxLines="1"
+                    android:onClick="removeFoodFromIntake"
                     android:text="@string/button_remove_food_from_intake"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/button_add_food_to_intake"
-                    android:onClick="removeFoodFromIntake"/>
+                    app:layout_constraintStart_toEndOf="@+id/button_add_food_to_intake" />
 
                 <Button
                     android:id="@+id/button_set_daily_goals"
@@ -123,12 +118,12 @@
                     android:layout_marginHorizontal="10dp"
                     android:backgroundTint="@color/neutral"
                     android:maxLines="1"
+                    android:onClick="setDailyGoals"
                     android:text="@string/button_set_daily_goals"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:layout_editor_absoluteX="10dp"
-                    tools:layout_editor_absoluteY="10dp"
-                    android:onClick="setDailyGoals"/>
+                    tools:layout_editor_absoluteY="10dp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

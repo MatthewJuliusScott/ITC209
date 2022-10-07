@@ -18,20 +18,19 @@ import com.itc209.assignment4.model.Notification;
 
 public class MainActivity extends AppCompatActivity {
 
-    MainController mainController;
-
     private static final String CHANNEL_ID = "9b7494ad-b68a-4863-b191-c13e981d3b78";
+    MainController mainController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         createNotificationChannel();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendNotification(new Notification("New Message", "This is a new message.", Notification.Type.NEUTRAL));
-        sendNotification(new Notification("New Message", "This is a new message.", Notification.Type.NEGATIVE));
-        sendNotification(new Notification("New Message", "This is a new message.", Notification.Type.POSITIVE));
         mainController = new MainController(getApplicationContext());
+        resetButtons();
+    }
 
+    private void resetButtons() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
