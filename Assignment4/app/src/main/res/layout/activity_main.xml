@@ -24,10 +24,10 @@
                 android:shadowDx="1.5"
                 android:shadowDy="1.5"
                 android:shadowRadius="12.0"
-                android:text="Today's Nutrition"
+                android:text="@string/main_activity_title"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +36,9 @@
                 android:layout_width="112dp"
                 android:layout_height="112dp"
                 android:layout_weight=".20"
+                android:contentDescription="@string/main_activity_logo_description"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/logo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -80,10 +82,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:baselineAligned="false">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 

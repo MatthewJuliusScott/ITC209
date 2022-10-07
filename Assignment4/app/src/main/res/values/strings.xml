@@ -7,4 +7,6 @@
     <string name="button_remove_food_from_intake">Remove Food</string>
     <string name="button_set_daily_goals">Daily Goals</string>
     <string name="daily_food_intake">Daily food intake</string>
+    <string name="main_activity_title">Today\'s Nutrition</string>
+    <string name="main_activity_logo_description">Logo</string>
 </resources>
