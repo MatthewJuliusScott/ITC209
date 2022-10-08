@@ -3,6 +3,7 @@ package com.itc209.assignment4;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import com.itc209.assignment4.adapter.IntakeAdapter;
 import com.itc209.assignment4.controller.ConstraintController;
@@ -25,21 +40,69 @@ import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "9b7494ad-b68a-4863-b191-c13e981d3b78";
-    FoodController foodController;
-    IntakeController intakeController;
-    ConstraintController constraintController;
+    private FoodController foodController;
+    private IntakeController intakeController;
+    private ConstraintController constraintController;
+    private BarChart chart;
+    private TextView tvX, tvY;
+
+    private void setData(int count, float range) {
+
+        float start = 1f;
+
+        ArrayList<BarEntry> values = new ArrayList<>();
+
+        for (int i = (int) start; i < start + count; i++) {
+            float val = (float) (Math.random() * (range + 1));
+            values.add(new BarEntry(i, val));
+        }
+
+        BarDataSet set1;
+
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+
+        } else {
+            set1 = new BarDataSet(values, "The year 2017");
+
+            set1.setDrawIcons(false);
+
+            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+            dataSets.add(set1);
+
+            BarData data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            data.setBarWidth(0.9f);
+
+            chart.setData(data);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        createNotificationChannel();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
+        chart = findViewById(R.id.chart1);
+        drawGraph();
+        setData(4, 100.0f);
+
+        createNotificationChannel();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         foodController = new FoodController(getApplicationContext());
         intakeController = new IntakeController(getApplicationContext(), foodController);
         constraintController = new ConstraintController(getApplicationContext(), intakeController);
@@ -65,6 +128,56 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void drawGraph() {
+        tvX = findViewById(R.id.tvXMax);
+        tvY = findViewById(R.id.tvYMax);
+
+        chart = findViewById(R.id.chart1);
+
+        chart.setDrawBarShadow(false);
+        chart.setDrawValueAboveBar(true);
+
+        chart.getDescription().setEnabled(false);
+
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        chart.setMaxVisibleValueCount(60);
+
+        // scaling can now only be done on x- and y-axis separately
+        chart.setPinchZoom(false);
+
+        chart.setDrawGridBackground(false);
+        // chart.setDrawYLabels(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setLabelCount(8, false);
+        leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setLabelCount(8, false);
+        rightAxis.setSpaceTop(15f);
+        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setForm(LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
+    }
+
     public void fillRemoveIntakeRecyclerView() throws Exception {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         List<Intake> intakes = intakeController.getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
@@ -88,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         // grey out remove food from intake if there is no intake selected
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
-        IntakeAdapter intakeAdapter = (IntakeAdapter)removeIntakeRecyclerView.getAdapter();
+        IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
         Intake intake = intakeAdapter.getSelectedIntake();
         if (intake != null) {
             button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.negative, null)));
@@ -139,14 +252,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addFoodToIntake(View view) {
-        Intent addFoodToIntake = new Intent(MainActivity.this,AddFoodToIntake.class);
+        Intent addFoodToIntake = new Intent(MainActivity.this, AddFoodToIntake.class);
         startActivity(addFoodToIntake);
         finish();
     }
 
     public void removeFoodFromIntake(View view) {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
-        IntakeAdapter intakeAdapter = (IntakeAdapter)removeIntakeRecyclerView.getAdapter();
+        IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
         Intake intake = intakeAdapter.getSelectedIntake();
         if (intake != null) {
             // delete selected intake and then reset the selection and remove button
@@ -159,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setDailyGoals(View view) {
-        Intent setDailyGoals = new Intent(MainActivity.this,SetDailyGoals.class);
+        Intent setDailyGoals = new Intent(MainActivity.this, SetDailyGoals.class);
         startActivity(setDailyGoals);
         finish();
     }
