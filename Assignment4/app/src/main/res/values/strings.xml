@@ -9,4 +9,7 @@
     <string name="daily_food_intake">Daily food intake</string>
     <string name="main_activity_title">Today\'s Nutrition</string>
     <string name="main_activity_logo_description">Logo</string>
+    <string name="intake_name">Food</string>
+    <string name="intake_time">Time</string>
+    <string name="intake_calories">Calories</string>
 </resources>

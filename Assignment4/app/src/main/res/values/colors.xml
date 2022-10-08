@@ -14,6 +14,7 @@
     <color name="row">#ffffff</color>
     <color name="rowAlternate">#cac4d0</color>
     <color name="rowSelected">#ffaeae</color>
+    <color name="rowHeader">#3c0a77</color>
     <color name="protein">#d9b859</color>
     <color name="fat">#8771c1</color>
     <color name="carbohydrates">#2371a9</color>
