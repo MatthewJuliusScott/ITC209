@@ -3,7 +3,6 @@ package com.itc209.assignment4;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +17,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
@@ -36,9 +33,13 @@ import com.itc209.assignment4.adapter.IntakeAdapter;
 import com.itc209.assignment4.controller.ConstraintController;
 import com.itc209.assignment4.controller.FoodController;
 import com.itc209.assignment4.controller.IntakeController;
+import com.itc209.assignment4.formatter.GramsFormatter;
+import com.itc209.assignment4.graph.NoOpAxisRenderer;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
+import com.itc209.assignment4.model.Nutrient;
+import com.itc209.assignment4.formatter.NutritionFormatter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,18 +52,27 @@ public class MainActivity extends AppCompatActivity {
     private IntakeController intakeController;
     private ConstraintController constraintController;
     private BarChart chart;
-    private TextView tvX, tvY;
 
-    private void setData(int count, float range) {
+    private void setGraphData() throws Exception {
 
-        float start = 1f;
-
+        int count = 3;
+        Food totalFood = intakeController.getTotalFood(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
+        float range = 0f;
         ArrayList<BarEntry> values = new ArrayList<>();
-
-        for (int i = (int) start; i < start + count; i++) {
-            float val = (float) (Math.random() * (range + 1));
-            values.add(new BarEntry(i, val));
+        // get the maximum value
+        if (totalFood.getProtein() > range) {
+            range = totalFood.getProtein();
         }
+        if (totalFood.getFat() > range) {
+            range = totalFood.getFat();
+        }
+        if (totalFood.getCarbohydrates() > range) {
+            range = totalFood.getCarbohydrates();
+        }
+        // add the total food nutrition values
+        values.add(new BarEntry(Nutrient.PROTEIN.ordinal(), totalFood.getProtein()));
+        values.add(new BarEntry(Nutrient.FAT.ordinal(), totalFood.getFat()));
+        values.add(new BarEntry(Nutrient.CARBOHYDRATE.ordinal(), totalFood.getCarbohydrates()));
 
         BarDataSet set1;
 
@@ -72,11 +82,12 @@ public class MainActivity extends AppCompatActivity {
             set1.setValues(values);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
-
+            chart.invalidate();
         } else {
-            set1 = new BarDataSet(values, "The year 2017");
-
+            set1 = new BarDataSet(values, null);
             set1.setDrawIcons(false);
+
+            set1.setColors(new int[]{R.color.protein, R.color.fat, R.color.carbohydrates}, MainActivity.this);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
@@ -94,15 +105,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
-        chart = findViewById(R.id.chart1);
-        drawGraph();
-        setData(4, 100.0f);
-
-        createNotificationChannel();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         foodController = new FoodController(getApplicationContext());
         intakeController = new IntakeController(getApplicationContext(), foodController);
         constraintController = new ConstraintController(getApplicationContext(), intakeController);
@@ -114,6 +116,16 @@ public class MainActivity extends AppCompatActivity {
         foodController.saveFood(food2);
         intakeController.saveIntake(new Intake(new Date(), food1));
         intakeController.saveIntake(new Intake(new Date(), food2));
+
+        try {
+            drawGraph();
+        } catch (Exception e) {
+            System.err.println("Error rendering graph: " + System.lineSeparator() + e.getMessage());
+            e.printStackTrace();
+        }
+
+        createNotificationChannel();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         try {
             fillRemoveIntakeRecyclerView();
@@ -128,54 +140,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void drawGraph() {
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
+    private void drawGraph() throws Exception {
+        setupGraph();
+        setGraphData();
+    }
 
+    private void setupGraph() {
         chart = findViewById(R.id.chart1);
 
         chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);
 
         chart.getDescription().setEnabled(false);
-
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        chart.setMaxVisibleValueCount(60);
-
-        // scaling can now only be done on x- and y-axis separately
+        chart.setMaxVisibleValueCount(Integer.MAX_VALUE);
         chart.setPinchZoom(false);
-
         chart.setDrawGridBackground(false);
-        // chart.setDrawYLabels(false);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(7);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(3);
+        xAxis.setValueFormatter(new NutritionFormatter());
 
         YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setValueFormatter(new GramsFormatter());
         leftAxis.setLabelCount(8, false);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        chart.setRendererRightYAxis(new NoOpAxisRenderer(chart.getViewPortHandler(), chart.getAxisLeft(), chart.getTransformer(YAxis.AxisDependency.RIGHT)));
 
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setLabelCount(8, false);
-        rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
     }
 
     public void fillRemoveIntakeRecyclerView() throws Exception {
@@ -257,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void removeFoodFromIntake(View view) {
+    public void removeFoodFromIntake(View view) throws Exception {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
         Intake intake = intakeAdapter.getSelectedIntake();
@@ -268,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
             Button button = findViewById(R.id.buttonRemoveFoodFromIntake);
             button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
             button.setEnabled(false);
+            setGraphData();
         }
     }
 

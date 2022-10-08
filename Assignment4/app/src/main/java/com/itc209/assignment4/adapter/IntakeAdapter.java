@@ -66,8 +66,7 @@ public class IntakeAdapter extends
         View contactView = inflater.inflate(R.layout.item_intake, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
-        return viewHolder;
+        return new ViewHolder(contactView);
     }
 
     @Override

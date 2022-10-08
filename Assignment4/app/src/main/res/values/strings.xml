@@ -5,7 +5,7 @@
     <string name="channel_description">Notification Channel for NutritionHelper</string>
     <string name="button_add_food_to_intake">Add Food</string>
     <string name="button_remove_food_from_intake">Remove Food</string>
-    <string name="button_set_daily_goals">Daily Goals</string>
+    <string name="button_set_daily_goals">Goals</string>
     <string name="daily_food_intake">Daily food intake</string>
     <string name="main_activity_title">Today\'s Nutrition</string>
     <string name="main_activity_logo_description">Logo</string>

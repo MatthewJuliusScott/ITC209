@@ -47,6 +47,7 @@
             android:id="@+id/scrollViewDailyFoodIntake"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="50dp"
             android:contentDescription="@string/daily_food_intake">
 
             <LinearLayout
@@ -72,16 +73,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/tvYMax"
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-
-                    <TextView
-                        android:id="@+id/tvXMax"
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
                 </LinearLayout>
 
 
