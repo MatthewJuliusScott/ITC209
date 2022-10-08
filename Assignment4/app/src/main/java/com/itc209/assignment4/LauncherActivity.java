@@ -12,24 +12,22 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-        Thread loading = new Thread() {
-            public void run() {
-                try {
-                    sleep(1500);
-                    Intent main = new Intent(LauncherActivity.this,MainActivity.class);
-                    startActivity(main);
-                    finish();
-                }
-
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                finally {
-                    finish();
-                }
+        Thread loading = new Thread(() -> {
+            try {
+                Thread.sleep(1500);
+                Intent main = new Intent(LauncherActivity.this,MainActivity.class);
+                startActivity(main);
+                finish();
             }
-        };
+
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            finally {
+                finish();
+            }
+        });
 
         loading.start();
     }

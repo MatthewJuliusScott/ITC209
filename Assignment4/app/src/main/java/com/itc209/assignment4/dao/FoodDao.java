@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.itc209.assignment4.model.Food;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class FoodDao {
@@ -46,7 +45,7 @@ public class FoodDao {
             open();
             String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
             try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " = ?", new String[]{name}, null, null, null)) {
-                if (cursor != null) {
+                if (cursor != null && cursor.getCount() >= 1) {
                     cursor.moveToFirst();
                     int nameIndex = cursor.getColumnIndexOrThrow(NAME);
                     int caloriesIndex = cursor.getColumnIndexOrThrow(CALORIES);
@@ -92,7 +91,7 @@ public class FoodDao {
             List<Food> foods = new ArrayList<>();
             String[] columns = new String[]{NAME, CALORIES, FAT, PROTEIN, CARBOHYDRATES};
             try (Cursor cursor = database.query(TABLE_NAME, columns, NAME + " LIKE ?", new String[]{"%" + keyword + "%"}, null, null, null)) {
-                if (cursor != null) {
+                if (cursor != null && cursor.getCount() >= 1) {
                     while (cursor.moveToNext()) {
                         int nameIndex = cursor.getColumnIndexOrThrow(NAME);
                         int caloriesIndex = cursor.getColumnIndexOrThrow(CALORIES);

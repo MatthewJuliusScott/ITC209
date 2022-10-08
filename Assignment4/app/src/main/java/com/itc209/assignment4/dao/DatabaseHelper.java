@@ -17,9 +17,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String create_food_table = "CREATE TABLE " + FoodDao.TABLE_NAME + " (" + FoodDao.NAME + " TEXT PRIMARY KEY, " + FoodDao.CALORIES + " INT, " + FoodDao.FAT + " INT, " + FoodDao.PROTEIN + " FLOAT, " + FoodDao.CARBOHYDRATES + " FLOAT);";
+        String create_food_table = "CREATE TABLE " + FoodDao.TABLE_NAME + " (" + FoodDao.NAME + " TEXT PRIMARY KEY, " + FoodDao.CALORIES + " INTEGER, " + FoodDao.FAT + " REAL, " + FoodDao.PROTEIN + " REAL, " + FoodDao.CARBOHYDRATES + " REAL);";
         String create_intake_table = "CREATE TABLE " + IntakeDao.TABLE_NAME + " (" + IntakeDao.FOOD_NAME + " NAME, " + IntakeDao.TIME + " DATETIME, PRIMARY KEY (" + IntakeDao.FOOD_NAME + ", " + IntakeDao.TIME + "));";
-        String create_constraint_table = "CREATE TABLE " + ConstraintDao.TABLE_NAME + " (id LONG PRIMARY KEY, " + ConstraintDao.IS_GOAL + " BOOLEAN, " + ConstraintDao.AMOUNT + " FLOAT, " + ConstraintDao.TYPE + " INT);";
+        String create_constraint_table = "CREATE TABLE " + ConstraintDao.TABLE_NAME + " (id INTEGER PRIMARY KEY, " + ConstraintDao.IS_GOAL + " BOOLEAN, " + ConstraintDao.AMOUNT + " REAL, " + ConstraintDao.TYPE + " INTEGER);";
 
         db.execSQL(create_food_table);
         db.execSQL(create_intake_table);

@@ -5,7 +5,7 @@ public class Constraint {
     public Constraint() {
         super();
     }
-    public Constraint(long id, boolean isGoal, float amount, Type type) {
+    public Constraint(int id, boolean isGoal, float amount, Type type) {
         super();
         this.id = id;
         this.isGoal = isGoal;
@@ -13,7 +13,7 @@ public class Constraint {
         this.type = type;
     }
 
-    private long id;
+    private int id;
     private boolean isGoal;
     private float amount;
     private Type type;
@@ -33,11 +33,11 @@ public class Constraint {
         this.isGoal = isGoal;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

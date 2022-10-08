@@ -44,27 +44,31 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
-            android:id="@+id/scrollView"
+            android:id="@+id/scrollViewDailyFoodIntake"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/daily_food_intake">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/removeIntakeRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginStart="10dp" />
 
                 <ImageView
                     android:id="@+id/graphPlaceholder"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/logo" />
+
+
             </LinearLayout>
         </ScrollView>
 
@@ -91,7 +95,7 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/button_add_food_to_intake"
+                    android:id="@+id/buttonAddFoodToIntake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -103,7 +107,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
-                    android:id="@+id/button_remove_food_from_intake"
+                    android:id="@+id/buttonRemoveFoodFromIntake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -112,10 +116,10 @@
                     android:onClick="removeFoodFromIntake"
                     android:text="@string/button_remove_food_from_intake"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/button_add_food_to_intake" />
+                    app:layout_constraintStart_toEndOf="@+id/buttonAddFoodToIntake" />
 
                 <Button
-                    android:id="@+id/button_set_daily_goals"
+                    android:id="@+id/buttonSetDailyGoals"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"

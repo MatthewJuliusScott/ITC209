@@ -6,13 +6,9 @@ import com.itc209.assignment4.Utils;
 import com.itc209.assignment4.dao.ConstraintDao;
 import com.itc209.assignment4.model.Constraint;
 import com.itc209.assignment4.model.Food;
-import com.itc209.assignment4.model.Intake;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ConstraintController {

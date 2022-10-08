@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.itc209.assignment4.model.Constraint;
-import com.itc209.assignment4.model.Food;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class ConstraintDao {
                     int goalIndex = cursor.getColumnIndexOrThrow(IS_GOAL);
                     int amountIndex = cursor.getColumnIndexOrThrow(AMOUNT);
                     int typeIndex = cursor.getColumnIndexOrThrow(TYPE);
-                    return new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]);
+                    return new Constraint(cursor.getInt(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]);
                 }
             }
             return null;
@@ -90,13 +89,13 @@ public class ConstraintDao {
             List<Constraint> constraints = new ArrayList<>();
             String[] columns = new String[]{ID, IS_GOAL, AMOUNT, TYPE};
             try (Cursor cursor = database.query(TABLE_NAME, columns, null, null, null, null, null)) {
-                if (cursor != null) {
+                if (cursor != null && cursor.getCount() >= 1) {
                     while (cursor.moveToNext()) {
                         int idIndex = cursor.getColumnIndexOrThrow(ID);
                         int goalIndex = cursor.getColumnIndexOrThrow(IS_GOAL);
                         int amountIndex = cursor.getColumnIndexOrThrow(AMOUNT);
                         int typeIndex = cursor.getColumnIndexOrThrow(TYPE);
-                        constraints.add(new Constraint(cursor.getLong(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]));
+                        constraints.add(new Constraint(cursor.getInt(idIndex), cursor.getInt(goalIndex) != 0, cursor.getFloat(amountIndex), Constraint.Type.values()[cursor.getInt(typeIndex)]));
                     }
                 }
             }

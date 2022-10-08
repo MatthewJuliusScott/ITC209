@@ -47,9 +47,8 @@ public class IntakeDao {
             List<Intake> intakes = new ArrayList<>();
             String[] columns = new String[]{TIME, FOOD_NAME};
             Cursor cursor = database.query(TABLE_NAME, columns, TIME + " > ? AND " + TIME + " < ?", new String[]{Long.toString(start.getTime()), Long.toString(end.getTime())}, null, null, null);
-            if (cursor != null) {
+            if (cursor != null && cursor.getCount() >= 1) {
                 while (cursor.moveToNext()) {
-                    cursor.moveToFirst();
                     int timeIndex = cursor.getColumnIndexOrThrow(TIME);
                     int foodNameIndex = cursor.getColumnIndexOrThrow(FOOD_NAME);
                     intakes.add(new Intake(new Date(cursor.getLong(timeIndex)), foodDao.findFoodByName(cursor.getString(foodNameIndex))));

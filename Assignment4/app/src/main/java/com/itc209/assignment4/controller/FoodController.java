@@ -37,7 +37,7 @@ public class FoodController {
 
     public List<Food> findFoodsByKeyword(String keyword) {
 
-        List<Food> foods = new ArrayList<Food>();
+        List<Food> foods = new ArrayList<>();
 
         // fetch any matching foods from the API
         try {

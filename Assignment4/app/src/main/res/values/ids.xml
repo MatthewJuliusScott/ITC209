@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="intake_name" type="id"></item>
+    <item name="intake_time" type="id"></item>
+    <item name="intake_calories" type="id"></item>
+</resources>
