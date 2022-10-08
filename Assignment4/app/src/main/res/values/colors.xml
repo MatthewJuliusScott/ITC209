@@ -11,4 +11,7 @@
     <color name="negative">#ff005b</color>
     <color name="neutral">#387eff</color>
     <color name="disabled">#cccccc</color>
+    <color name="row">#ffffff</color>
+    <color name="rowAlternate">#cac4d0</color>
+    <color name="rowSelected">#ffaeae</color>
 </resources>

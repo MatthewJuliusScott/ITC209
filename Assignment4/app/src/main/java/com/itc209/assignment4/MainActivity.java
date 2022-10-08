@@ -63,11 +63,12 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         List<Intake> intakes = mainController.getIntakeController().getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
         IntakeAdapter adapter = new IntakeAdapter(intakes);
+        adapter.addContext(MainActivity.this);
         removeIntakeRecyclerView.setAdapter(adapter);
         removeIntakeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void resetButtons() throws Exception {
+    public void resetButtons() throws Exception {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -79,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.buttonRemoveFoodFromIntake);
         button.setMaxWidth(displayMetrics.widthPixels / 4);
 
-        // grey out remove food from intake if there is no intake for today
-        List<Intake> intakes = mainController.getIntakeController().getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
-        if (intakes.size() > 0) {
+        // grey out remove food from intake if there is no intake selected
+        RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
+        IntakeAdapter intakeAdapter = (IntakeAdapter)removeIntakeRecyclerView.getAdapter();
+        Intake intake = intakeAdapter.getSelectedIntake();
+        if (intake != null) {
             button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.negative, null)));
             button.setEnabled(true);
         } else {
@@ -91,10 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         button = findViewById(R.id.buttonSetDailyGoals);
         button.setMaxWidth(displayMetrics.widthPixels / 4);
-
-
-
-
     }
 
     public void sendNotification(Notification notification) {

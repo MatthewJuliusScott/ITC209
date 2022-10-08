@@ -1,15 +1,19 @@
 package com.itc209.assignment4.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.itc209.assignment4.MainActivity;
 import com.itc209.assignment4.R;
 import com.itc209.assignment4.model.Intake;
 
@@ -22,9 +26,27 @@ public class IntakeAdapter extends
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
     private List<Intake> intakes;
+    private int selected = -1;
+    private Context context;
 
     public IntakeAdapter(List<Intake> intakes) {
         this.intakes = intakes;
+    }
+
+    public int select(int position) {
+        if (selected == position) {
+            selected = -1;
+        } else {
+            selected = position;
+        }
+        return selected;
+    }
+
+    public Intake getSelectedIntake() {
+        if (selected > -1) {
+            return intakes.get(selected);
+        }
+        return null;
     }
 
     @NonNull
@@ -53,6 +75,14 @@ public class IntakeAdapter extends
 
         TextView caloriesTextView = holder.caloriesTextView;
         caloriesTextView.setText(String.valueOf(intake.getFood().getCalories()));
+
+        if (position == selected) {
+            holder.itemView.setBackgroundColor(ResourcesCompat.getColor(nameTextView.getContext().getResources(), R.color.rowSelected, null));
+        } else if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(ResourcesCompat.getColor(nameTextView.getContext().getResources(), R.color.row, null));
+        } else {
+            holder.itemView.setBackgroundColor(ResourcesCompat.getColor(nameTextView.getContext().getResources(), R.color.rowAlternate, null));
+        }
     }
 
     @Override
@@ -60,9 +90,13 @@ public class IntakeAdapter extends
         return intakes.size();
     }
 
+    public void addContext(Context context) {
+        this.context = context;
+    }
+
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView nameTextView;
@@ -79,6 +113,25 @@ public class IntakeAdapter extends
             nameTextView = (TextView) itemView.findViewById(R.id.intake_name);
             timeTextView = (TextView) itemView.findViewById(R.id.intake_time);
             caloriesTextView = (TextView) itemView.findViewById(R.id.intake_calories);
+
+            itemView.setOnClickListener(this);
+        }
+
+        // Handles the row being being clicked
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition(); // gets item position
+            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                int selected = IntakeAdapter.this.select(position);
+                notifyDataSetChanged();
+                if (context.getClass().equals(MainActivity.class)) {
+                    try {
+                        ((MainActivity) context).resetButtons();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }
