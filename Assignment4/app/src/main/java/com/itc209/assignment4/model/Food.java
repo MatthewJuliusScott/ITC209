@@ -61,4 +61,14 @@ public class Food {
         this.fat = fat;
     }
 
+    @Override
+    public String toString() {
+        return "Food{" +
+                "name='" + name + '\'' +
+                ", calories=" + calories +
+                ", fat=" + fat +
+                ", protein=" + protein +
+                ", carbohydrates=" + carbohydrates +
+                '}';
+    }
 }

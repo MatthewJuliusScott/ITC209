@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -115,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
     public void displaySearchResults(View view) {
         System.out.println("search results");
         if (view instanceof TextView) {
-            System.out.println(((TextView)view).getText());
+            String keyword = ((TextView)view).getText().toString();
+            List<Food> foods = foodController.findFoodsByKeyword(keyword);
+            for (Food food : foods) {
+                System.out.println();
+            }
         }
     }
 
@@ -127,6 +132,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // allow networking on the main thread
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         foodController = new FoodController(getApplicationContext());
         intakeController = new IntakeController(getApplicationContext(), foodController);
