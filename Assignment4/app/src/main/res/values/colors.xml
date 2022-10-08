@@ -7,15 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="positive">#15d798</color>
-    <color name="negative">#ff005b</color>
-    <color name="neutral">#387eff</color>
-    <color name="disabled">#cccccc</color>
-    <color name="row">#ffffff</color>
-    <color name="rowAlternate">#cac4d0</color>
-    <color name="rowSelected">#ffaeae</color>
-    <color name="rowHeader">#3c0a77</color>
-    <color name="protein">#d9b859</color>
-    <color name="fat">#8771c1</color>
-    <color name="carbohydrates">#2371a9</color>
+    <color name="modal">#88000000</color>
+    <color name="positive">#ff15d798</color>
+    <color name="negative">#ffff005b</color>
+    <color name="neutral">#ff387eff</color>
+    <color name="disabled">#ffcccccc</color>
+    <color name="row">#ffffffff</color>
+    <color name="rowAlternate">#ffcac4d0</color>
+    <color name="rowSelected">#ffffaeae</color>
+    <color name="rowHeader">#ff3c0a77</color>
+    <color name="protein">#ffd9b859</color>
+    <color name="fat">#ff8771c1</color>
+    <color name="carbohydrates">#ff2371a9</color>
 </resources>

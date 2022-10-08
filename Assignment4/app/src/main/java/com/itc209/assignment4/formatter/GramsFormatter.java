@@ -1,7 +1,6 @@
 package com.itc209.assignment4.formatter;
 
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.itc209.assignment4.model.Nutrient;
 
 import java.text.DecimalFormat;
 

@@ -1,13 +1,10 @@
 package com.itc209.assignment4.adapter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -19,7 +16,6 @@ import com.itc209.assignment4.model.Intake;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 public class IntakeAdapter extends
         RecyclerView.Adapter<IntakeAdapter.ViewHolder> {

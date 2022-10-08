@@ -1,8 +1,8 @@
 package com.itc209.assignment4;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SetDailyGoals extends AppCompatActivity {
 

@@ -15,6 +15,7 @@ public class Notification {
         this.message = message;
         this.type = type;
     }
+
     public Notification() {
         super();
     }

@@ -5,6 +5,7 @@ public class Constraint {
     public Constraint() {
         super();
     }
+
     public Constraint(int id, boolean isGoal, float amount, Type type) {
         super();
         this.id = id;

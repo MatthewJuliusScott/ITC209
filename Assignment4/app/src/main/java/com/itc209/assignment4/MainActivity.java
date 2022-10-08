@@ -1,12 +1,6 @@
 package com.itc209.assignment4;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -17,6 +11,17 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -28,18 +33,18 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-
+import com.google.android.material.button.MaterialButton;
 import com.itc209.assignment4.adapter.IntakeAdapter;
 import com.itc209.assignment4.controller.ConstraintController;
 import com.itc209.assignment4.controller.FoodController;
 import com.itc209.assignment4.controller.IntakeController;
 import com.itc209.assignment4.formatter.GramsFormatter;
+import com.itc209.assignment4.formatter.NutritionFormatter;
 import com.itc209.assignment4.graph.NoOpAxisRenderer;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
 import com.itc209.assignment4.model.Nutrient;
-import com.itc209.assignment4.formatter.NutritionFormatter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,6 +105,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void search(View view) {
+        System.out.println("search");
+        FragmentManager fm = getSupportFragmentManager();
+        SearchForFoodFragment fragment = SearchForFoodFragment.newInstance("Search for food");
+        fragment.show(fm, "fragment_search_for_food");
+    }
+
+    public void displaySearchResults(View view) {
+        System.out.println("search results");
+        if (view instanceof TextView) {
+            System.out.println(((TextView)view).getText());
+        }
+    }
+
+    public void enterNewFood(View view) {
+        System.out.println("enter new food");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,14 +131,6 @@ public class MainActivity extends AppCompatActivity {
         foodController = new FoodController(getApplicationContext());
         intakeController = new IntakeController(getApplicationContext(), foodController);
         constraintController = new ConstraintController(getApplicationContext(), intakeController);
-
-        // TEST DATA
-        Food food1 = new Food("food1", 100, 0.1f, 0.2f, 0.2f);
-        Food food2 = new Food("food2", 110, 0.15f, 0.25f, 0.15f);
-        foodController.saveFood(food1);
-        foodController.saveFood(food2);
-        intakeController.saveIntake(new Intake(new Date(), food1));
-        intakeController.saveIntake(new Intake(new Date(), food2));
 
         try {
             drawGraph();
@@ -248,9 +263,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addFoodToIntake(View view) {
-        Intent addFoodToIntake = new Intent(MainActivity.this, AddFoodToIntake.class);
-        startActivity(addFoodToIntake);
-        finish();
+        FragmentManager fm = getSupportFragmentManager();
+        AddFoodToIntakeFragment fragment = AddFoodToIntakeFragment.newInstance("Add food to intake");
+        fragment.show(fm, "fragment_add_food_to_intake");
     }
 
     public void removeFoodFromIntake(View view) throws Exception {
