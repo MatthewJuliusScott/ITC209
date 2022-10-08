@@ -18,7 +18,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.itc209.assignment4.adapter.IntakeAdapter;
-import com.itc209.assignment4.controller.MainController;
+import com.itc209.assignment4.controller.ConstraintController;
+import com.itc209.assignment4.controller.FoodController;
+import com.itc209.assignment4.controller.IntakeController;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
@@ -29,22 +31,26 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "9b7494ad-b68a-4863-b191-c13e981d3b78";
-    MainController mainController;
+    FoodController foodController;
+    IntakeController intakeController;
+    ConstraintController constraintController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         createNotificationChannel();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainController = new MainController(getApplicationContext());
+        foodController = new FoodController(getApplicationContext());
+        intakeController = new IntakeController(getApplicationContext(), foodController);
+        constraintController = new ConstraintController(getApplicationContext(), intakeController);
 
         // TEST DATA
         Food food1 = new Food("food1", 100, 0.1f, 0.2f, 0.2f);
         Food food2 = new Food("food2", 110, 0.15f, 0.25f, 0.15f);
-        mainController.getFoodController().saveFood(food1);
-        mainController.getFoodController().saveFood(food2);
-        mainController.getIntakeController().saveIntake(new Intake(new Date(), food1));
-        mainController.getIntakeController().saveIntake(new Intake(new Date(), food2));
+        foodController.saveFood(food1);
+        foodController.saveFood(food2);
+        intakeController.saveIntake(new Intake(new Date(), food1));
+        intakeController.saveIntake(new Intake(new Date(), food2));
 
         try {
             fillRemoveIntakeRecyclerView();
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void fillRemoveIntakeRecyclerView() throws Exception {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
-        List<Intake> intakes = mainController.getIntakeController().getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
+        List<Intake> intakes = intakeController.getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
         IntakeAdapter adapter = new IntakeAdapter(intakes);
         adapter.addContext(MainActivity.this);
         removeIntakeRecyclerView.setAdapter(adapter);
@@ -139,7 +145,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeFoodFromIntake(View view) {
-        // TODO implement
+        RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
+        IntakeAdapter intakeAdapter = (IntakeAdapter)removeIntakeRecyclerView.getAdapter();
+        Intake intake = intakeAdapter.getSelectedIntake();
+        if (intake != null) {
+            // delete selected intake and then reset the selection and remove button
+            intakeController.deleteIntake(intake.getDate(), intake.getFood().getName());
+            intakeAdapter.removeSelected();
+            Button button = findViewById(R.id.buttonRemoveFoodFromIntake);
+            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+            button.setEnabled(false);
+        }
     }
 
     public void setDailyGoals(View view) {

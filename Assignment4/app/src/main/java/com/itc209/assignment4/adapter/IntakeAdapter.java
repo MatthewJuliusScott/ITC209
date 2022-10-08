@@ -42,6 +42,13 @@ public class IntakeAdapter extends
         return selected;
     }
 
+    public void removeSelected() {
+        intakes.remove(selected);
+        notifyItemRemoved(selected);
+        selected = -1;
+        notifyDataSetChanged();
+    }
+
     public Intake getSelectedIntake() {
         if (selected > -1) {
             return intakes.get(selected);
