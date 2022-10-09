@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         values.add(new BarEntry(Nutrient.PROTEIN.ordinal(), totalFood.getProtein()));
         values.add(new BarEntry(Nutrient.FAT.ordinal(), totalFood.getFat()));
         values.add(new BarEntry(Nutrient.CARBOHYDRATE.ordinal(), totalFood.getCarbohydrates()));
-        values.add(new BarEntry(Nutrient.CALORIES.ordinal(), totalFood.getCalories()));
+        values.add(new BarEntry(Nutrient.CALORIES.ordinal(), totalFood.getCalories() / 10f));
 
         BarDataSet set1;
 

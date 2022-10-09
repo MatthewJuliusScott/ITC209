@@ -10,6 +10,6 @@ public class KiloJouleFormatter extends ValueFormatter {
 
     @Override
     public String getFormattedValue(float value) {
-        return df.format(value) + "kj";
+        return df.format((value * 10.0f)) + "kj";
     }
 }
