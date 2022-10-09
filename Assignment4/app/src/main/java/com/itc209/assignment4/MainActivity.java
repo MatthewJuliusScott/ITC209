@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        chart.setMinimumHeight(displayMetrics.heightPixels - 600);
     }
 
     public void fillRemoveIntakeRecyclerView() throws Exception {
