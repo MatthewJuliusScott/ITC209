@@ -3,6 +3,8 @@ package com.itc209.assignment4.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 public class Food implements Parcelable {
 
     public static final Parcelable.Creator<Food> CREATOR
@@ -108,5 +110,18 @@ public class Food implements Parcelable {
         out.writeFloat(fat);
         out.writeFloat(protein);
         out.writeFloat(carbohydrates);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Food food = (Food) o;
+        return calories == food.calories && Float.compare(food.fat, fat) == 0 && Float.compare(food.protein, protein) == 0 && Float.compare(food.carbohydrates, carbohydrates) == 0 && name.equals(food.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

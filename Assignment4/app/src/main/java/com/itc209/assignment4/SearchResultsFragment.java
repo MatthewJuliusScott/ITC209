@@ -11,6 +11,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -79,13 +80,26 @@ public class SearchResultsFragment extends DialogFragment {
     }
 
     public void resetButtons(View view, int selected) {
-        Button button = (Button) view.findViewById(R.id.button_add_search_result_to_intake);
+        Button button = view.findViewById(R.id.button_add_search_result_to_intake);
         if (selected > -1) {
             button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
             button.setEnabled(true);
+            button.setOnClickListener(v -> {
+                FragmentActivity activity = getActivity();
+                if (activity instanceof MainActivity) {
+                    try {
+                        ((MainActivity) activity).addFoodToIntake(foods.get(selected));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getDialog().dismiss();
+                }
+            });
         } else {
             button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
             button.setEnabled(false);
         }
+        button = view.findViewById((R.id.button_cancel));
+        button.setOnClickListener(v -> getDialog().dismiss());
     }
 }

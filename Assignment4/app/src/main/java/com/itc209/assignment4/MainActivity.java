@@ -56,20 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setGraphData() throws Exception {
 
-        int count = 3;
         Food totalFood = intakeController.getTotalFood(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
-        float range = 0f;
         ArrayList<BarEntry> values = new ArrayList<>();
-        // get the maximum value
-        if (totalFood.getProtein() > range) {
-            range = totalFood.getProtein();
-        }
-        if (totalFood.getFat() > range) {
-            range = totalFood.getFat();
-        }
-        if (totalFood.getCarbohydrates() > range) {
-            range = totalFood.getCarbohydrates();
-        }
         // add the total food nutrition values
         values.add(new BarEntry(Nutrient.PROTEIN.ordinal(), totalFood.getProtein()));
         values.add(new BarEntry(Nutrient.FAT.ordinal(), totalFood.getFat()));
@@ -208,13 +196,13 @@ public class MainActivity extends AppCompatActivity {
         removeIntakeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void resetButtons() throws Exception {
+    public void resetButtons() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         // reset button max width relative to screen size
         Button button;
-        button = findViewById(R.id.buttonAddFoodToIntake);
+        button = findViewById(R.id.buttonDisplayAddFoodToIntake);
         button.setMaxWidth(displayMetrics.widthPixels / 4);
 
         button = findViewById(R.id.buttonRemoveFoodFromIntake);
@@ -223,13 +211,15 @@ public class MainActivity extends AppCompatActivity {
         // grey out remove food from intake if there is no intake selected
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
-        Intake intake = intakeAdapter.getSelectedIntake();
-        if (intake != null) {
-            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.negative, null)));
-            button.setEnabled(true);
-        } else {
-            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
-            button.setEnabled(false);
+        if (intakeAdapter != null) {
+            Intake intake = intakeAdapter.getSelectedIntake();
+            if (intake != null) {
+                button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.negative, null)));
+                button.setEnabled(true);
+            } else {
+                button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+                button.setEnabled(false);
+            }
         }
 
         button = findViewById(R.id.buttonSetDailyGoals);
@@ -272,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void addFoodToIntake(View view) {
+    public void displayAddFoodToIntake(View view) {
         FragmentManager fm = getSupportFragmentManager();
         AddFoodToIntakeFragment fragment = AddFoodToIntakeFragment.newInstance("Add food to intake");
         fragment.show(fm, "fragment_add_food_to_intake");
@@ -281,16 +271,29 @@ public class MainActivity extends AppCompatActivity {
     public void removeFoodFromIntake(View view) throws Exception {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
-        Intake intake = intakeAdapter.getSelectedIntake();
-        if (intake != null) {
-            // delete selected intake and then reset the selection and remove button
-            intakeController.deleteIntake(intake.getDate(), intake.getFood().getName());
-            intakeAdapter.removeSelected();
-            Button button = findViewById(R.id.buttonRemoveFoodFromIntake);
-            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
-            button.setEnabled(false);
-            setGraphData();
+        if (intakeAdapter != null) {
+            Intake intake = intakeAdapter.getSelectedIntake();
+            if (intake != null) {
+                // delete selected intake and then reset the selection and remove button
+                intakeController.deleteIntake(intake.getDate(), intake.getFood().getName());
+                intakeAdapter.removeSelected();
+                Button button = findViewById(R.id.buttonRemoveFoodFromIntake);
+                button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+                button.setEnabled(false);
+                setGraphData();
+            }
         }
+    }
+
+    public void addFoodToIntake(Food food) throws Exception {
+        foodController.saveFood(food);
+        Intake intake = new Intake(new Date(), food);
+        intakeController.saveIntake(intake);
+        // add the new intake to the view
+        RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
+        IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
+        intakeAdapter.add(intake);
+        setGraphData();
     }
 
     public void setDailyGoals(View view) {

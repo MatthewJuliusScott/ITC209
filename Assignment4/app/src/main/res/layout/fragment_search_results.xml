@@ -79,7 +79,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/positive"
             android:maxLines="1"
-            android:onClick="addFoodToIntake"
             android:text="@string/button_add_food_to_intake"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -91,7 +90,6 @@
             android:layout_marginHorizontal="10dp"
             android:backgroundTint="@color/negative"
             android:maxLines="1"
-            android:onClick="cancel"
             android:text="@string/button_cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

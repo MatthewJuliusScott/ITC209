@@ -133,13 +133,13 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/buttonAddFoodToIntake"
+                    android:id="@+id/buttonDisplayAddFoodToIntake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:backgroundTint="@color/positive"
                     android:maxLines="1"
-                    android:onClick="addFoodToIntake"
+                    android:onClick="displayAddFoodToIntake"
                     android:text="@string/button_add_food_to_intake"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -154,7 +154,7 @@
                     android:onClick="removeFoodFromIntake"
                     android:text="@string/button_remove_food_from_intake"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/buttonAddFoodToIntake" />
+                    app:layout_constraintStart_toEndOf="@+id/buttonDisplayAddFoodToIntake" />
 
                 <Button
                     android:id="@+id/buttonSetDailyGoals"

@@ -38,6 +38,11 @@ public class IntakeAdapter extends
         return selected;
     }
 
+    public void add(Intake intake) {
+        intakes.add(intake);
+        notifyItemInserted(intakes.size());
+    }
+
     public void removeSelected() {
         intakes.remove(selected);
         notifyItemRemoved(selected);

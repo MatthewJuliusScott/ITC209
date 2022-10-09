@@ -12,7 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FoodController {
 
@@ -34,7 +36,7 @@ public class FoodController {
 
     public List<Food> findFoodsByKeyword(String keyword) {
 
-        List<Food> foods = new ArrayList<>();
+        Set<Food> foods = new HashSet<>();
 
         // fetch any matching foods from the API
         try {
@@ -105,7 +107,7 @@ public class FoodController {
         foods.addAll(foodDao.findFoodsByKeyword(keyword));
 
         // return combined list of foods
-        return foods;
+        return new ArrayList<>(foods);
 
     }
 
