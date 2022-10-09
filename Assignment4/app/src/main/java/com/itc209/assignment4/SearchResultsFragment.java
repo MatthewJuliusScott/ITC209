@@ -23,7 +23,6 @@ import java.util.List;
 
 public class SearchResultsFragment extends DialogFragment {
 
-    // Add RecyclerView member
     private RecyclerView recyclerView;
     private ArrayList<Food> foods;
 
@@ -80,11 +79,17 @@ public class SearchResultsFragment extends DialogFragment {
     }
 
     public void resetButtons(View view, int selected) {
-        Button button = view.findViewById(R.id.button_add_search_result_to_intake);
+
+        Button addButton = view.findViewById(R.id.button_button_search_results_add);
+        Button editButton = view.findViewById(R.id.button_search_results_edit);
+        Button cancelButton = view.findViewById(R.id.button_search_results_cancel);
+
+        // search result selected
         if (selected > -1) {
-            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
-            button.setEnabled(true);
-            button.setOnClickListener(v -> {
+            // add search result to intake button
+            addButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
+            addButton.setEnabled(true);
+            addButton.setOnClickListener(v -> {
                 FragmentActivity activity = getActivity();
                 if (activity instanceof MainActivity) {
                     try {
@@ -95,11 +100,31 @@ public class SearchResultsFragment extends DialogFragment {
                     getDialog().dismiss();
                 }
             });
+
+            // edit food button enabled
+            editButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.neutral, null)));
+            editButton.setEnabled(true);
+            editButton.setOnClickListener(v -> {
+                FragmentActivity activity = getActivity();
+                if (activity instanceof MainActivity) {
+                    try {
+                        ((MainActivity) activity).editFood(foods.get(selected));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getDialog().dismiss();
+                }
+            });
         } else {
-            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
-            button.setEnabled(false);
+            // no search result selected, edit and add food button disabled
+            addButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+            addButton.setEnabled(false);
+
+            editButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+            editButton.setEnabled(false);
         }
-        button = view.findViewById((R.id.button_cancel));
-        button.setOnClickListener(v -> getDialog().dismiss());
+
+        // cancel button
+        cancelButton.setOnClickListener(v -> getDialog().dismiss());
     }
 }

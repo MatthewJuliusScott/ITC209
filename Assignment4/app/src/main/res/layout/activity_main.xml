@@ -164,9 +164,7 @@
                     android:onClick="setDailyGoals"
                     android:text="@string/button_set_daily_goals"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:layout_editor_absoluteX="10dp"
-                    tools:layout_editor_absoluteY="10dp" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,12 @@ public class Utils {
         calendar.set(Calendar.MILLISECOND, 999);
         return calendar.getTime();
     }
+
+    public static boolean isNotBlank(String string) {
+        if (string != null) {
+            return !string.isEmpty();
+        } else {
+            return false;
+        }
+    }
 }

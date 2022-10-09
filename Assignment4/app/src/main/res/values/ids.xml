@@ -4,4 +4,9 @@
     <item name="intake_time" type="id"></item>
     <item name="intake_calories" type="id"></item>
     <item name="chart1" type="id" />
+    <item name="txt_calories" type="id" />
+    <item name="txt_protein" type="id" />
+    <item name="txt_carbohydrates" type="id" />
+    <item name="txt_fat" type="id" />
+    <item name="txt_name" type="id" />
 </resources>

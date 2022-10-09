@@ -20,4 +20,11 @@
     <string name="food_carbohydrates">Carbs</string>
     <string name="button_cancel">Cancel</string>
     <string name="food_name">Name</string>
+    <string name="button_save">Save</string>
+    <string name="button_edit_food">Edit</string>
+    <string name="lbl_name">Name</string>
+    <string name="lbl_calories">Calories</string>
+    <string name="lbl_protein">Protein</string>
+    <string name="lbl_carbohydrates">Carbohydrates</string>
+    <string name="lbl_fat">Fat</string>
 </resources>

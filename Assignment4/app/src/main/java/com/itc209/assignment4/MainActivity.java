@@ -93,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void search(View view) {
-        System.out.println("search");
         FragmentManager fm = getSupportFragmentManager();
-        SearchForFoodFragment fragment = SearchForFoodFragment.newInstance("Search for food");
+        SearchForFoodFragment fragment = SearchForFoodFragment.newInstance();
         fragment.show(fm, "fragment_search_for_food");
     }
 
     public void displaySearchResults(View view) {
-        System.out.println("search results");
         if (view instanceof TextView) {
             String keyword = ((TextView) view).getText().toString();
             List<Food> foods = foodController.findFoodsByKeyword(keyword);
@@ -113,8 +111,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void enterNewFood(View view) {
-        System.out.println("enter new food");
+    public void editFood(Food food) {
+        FragmentManager fm = getSupportFragmentManager();
+        CreateEditFoodFragment fragment = CreateEditFoodFragment.newInstance(food);
+        fragment.show(fm, "fragment_create_edit_food");
     }
 
     @Override
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayAddFoodToIntake(View view) {
         FragmentManager fm = getSupportFragmentManager();
-        AddFoodToIntakeFragment fragment = AddFoodToIntakeFragment.newInstance("Add food to intake");
+        AddFoodToIntakeFragment fragment = AddFoodToIntakeFragment.newInstance();
         fragment.show(fm, "fragment_add_food_to_intake");
     }
 

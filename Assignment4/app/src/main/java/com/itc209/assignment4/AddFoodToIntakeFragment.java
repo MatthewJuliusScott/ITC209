@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.itc209.assignment4.model.Food;
 
 public class AddFoodToIntakeFragment extends DialogFragment {
 
@@ -22,7 +23,7 @@ public class AddFoodToIntakeFragment extends DialogFragment {
     public AddFoodToIntakeFragment() {
     }
 
-    public static AddFoodToIntakeFragment newInstance(String title) {
+    public static AddFoodToIntakeFragment newInstance() {
         AddFoodToIntakeFragment fragment = new AddFoodToIntakeFragment();
         return fragment;
     }
@@ -40,27 +41,21 @@ public class AddFoodToIntakeFragment extends DialogFragment {
 
         // search
         MaterialButton searchButton = customLayout.findViewById(R.id.button_search);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                FragmentActivity activity = getActivity();
-                if (activity instanceof MainActivity) {
-                    ((MainActivity) activity).search(view);
-                }
+        searchButton.setOnClickListener(view -> {
+            dialog.dismiss();
+            FragmentActivity activity = getActivity();
+            if (activity instanceof MainActivity) {
+                ((MainActivity) activity).search(view);
             }
         });
 
         // enter new food
         MaterialButton enterNewFoodButton = customLayout.findViewById(R.id.button_enter_new_food);
-        enterNewFoodButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                FragmentActivity activity = getActivity();
-                if (activity instanceof MainActivity) {
-                    ((MainActivity) activity).enterNewFood(view);
-                }
+        enterNewFoodButton.setOnClickListener(view -> {
+            dialog.dismiss();
+            FragmentActivity activity = getActivity();
+            if (activity instanceof MainActivity) {
+                ((MainActivity) activity).editFood(null);
             }
         });
 

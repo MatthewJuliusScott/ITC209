@@ -19,7 +19,7 @@ public class SearchForFoodFragment extends DialogFragment {
     public SearchForFoodFragment() {
     }
 
-    public static SearchForFoodFragment newInstance(String title) {
+    public static SearchForFoodFragment newInstance() {
         SearchForFoodFragment fragment = new SearchForFoodFragment();
         return fragment;
     }
@@ -37,24 +37,21 @@ public class SearchForFoodFragment extends DialogFragment {
 
         // set action listener
         EditText editText = customLayout.findViewById(R.id.txt_enter_name);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                // If triggered by an enter key, this is the event; otherwise, this is null.
-                if (event != null) {
-                    if (!event.isShiftPressed()) {
-                        dialog.dismiss();
-                        return true;
-                    }
-                    return false;
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            // If triggered by an enter key, this is the event; otherwise, this is null.
+            if (event != null) {
+                if (!event.isShiftPressed()) {
+                    dialog.dismiss();
+                    return true;
                 }
-                dialog.dismiss();
-                FragmentActivity activity = getActivity();
-                if (activity instanceof MainActivity) {
-                    ((MainActivity) activity).displaySearchResults(editText);
-                }
-                return true;
+                return false;
             }
+            dialog.dismiss();
+            FragmentActivity activity = getActivity();
+            if (activity instanceof MainActivity) {
+                ((MainActivity) activity).displaySearchResults(editText);
+            }
+            return true;
         });
         return dialog;
     }
