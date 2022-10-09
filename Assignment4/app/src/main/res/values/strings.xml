@@ -12,8 +12,6 @@
     <string name="intake_name">Food</string>
     <string name="intake_time">Time</string>
     <string name="intake_calories">Calories</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="food_calories">Cals</string>
     <string name="food_fat">Fat</string>
     <string name="food_protein">Protein</string>
@@ -27,4 +25,5 @@
     <string name="lbl_protein">Protein</string>
     <string name="lbl_carbohydrates">Carbohydrates</string>
     <string name="lbl_fat">Fat</string>
+    <string name="title_create_edit_food">Create/Edit Food</string>
 </resources>

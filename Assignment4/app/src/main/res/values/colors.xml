@@ -20,4 +20,5 @@
     <color name="fat">#ff7a61ba</color>
     <color name="carbohydrates">#ff4198d7</color>
     <color name="calories">#ffff9090</color>
+    <color name="input">#ffc4c4c4</color>
 </resources>

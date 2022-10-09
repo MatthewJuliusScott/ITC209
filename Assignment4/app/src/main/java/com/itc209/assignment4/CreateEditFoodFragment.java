@@ -2,16 +2,21 @@ package com.itc209.assignment4;
 
 import android.app.Dialog;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
@@ -64,6 +69,15 @@ public class CreateEditFoodFragment extends DialogFragment {
         EditText protein = view.findViewById(R.id.txt_protein);
         EditText carbohydrates = view.findViewById(R.id.txt_carbohydrates);
         EditText fat = view.findViewById(R.id.txt_fat);
+
+        // set orientation and gravity of layout
+        LinearLayout layout = view.findViewById(R.id.create_edit_food_container);
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layout.setOrientation(LinearLayout.VERTICAL);
+        }
 
         if (savedInstanceState != null) {
             food = savedInstanceState.getParcelable("food");
