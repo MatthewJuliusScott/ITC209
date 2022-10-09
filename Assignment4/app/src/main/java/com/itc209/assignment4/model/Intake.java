@@ -10,6 +10,7 @@ public class Intake {
     public Intake() {
         super();
     }
+
     public Intake(Date date, Food food) {
         super();
         this.date = date;

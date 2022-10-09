@@ -12,19 +12,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.itc209.assignment4.MainActivity;
 import com.itc209.assignment4.R;
+import com.itc209.assignment4.SearchResultsFragment;
 import com.itc209.assignment4.model.Food;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class FoodAdapter extends
         RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     private final List<Food> foods;
     private int selected = -1;
     private Context context;
+
+    public void setFragment(SearchResultsFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    private SearchResultsFragment fragment;
 
     public FoodAdapter(List<Food> foods) {
         this.foods = foods;
@@ -37,13 +44,6 @@ public class FoodAdapter extends
             selected = position;
         }
         return selected;
-    }
-
-    public Food getSelectedFood() {
-        if (selected > -1) {
-            return foods.get(selected);
-        }
-        return null;
     }
 
     @NonNull
@@ -67,16 +67,16 @@ public class FoodAdapter extends
         nameTextView.setText(food.getName());
 
         TextView caloriesTextView = holder.caloriesTextView;
-        caloriesTextView.setText(String.valueOf(food.getCalories()));
+        caloriesTextView.setText(food.getCalories() + "kj");
 
         TextView fatTextView = holder.fatTextView;
-        fatTextView.setText(String.valueOf(food.getFat()));
+        fatTextView.setText(df.format(food.getFat()) + "g");
 
         TextView proteinTextView = holder.proteinTextView;
-        proteinTextView.setText(String.valueOf(food.getProtein()));
+        proteinTextView.setText(df.format(food.getProtein()) + "g");
 
         TextView carbohydratesTextView = holder.carbohydratesTextView;
-        carbohydratesTextView.setText(String.valueOf(food.getCarbohydrates()));
+        carbohydratesTextView.setText(df.format(food.getCarbohydrates()) + "g");
 
         if (position == selected) {
             holder.itemView.setBackgroundColor(ResourcesCompat.getColor(nameTextView.getContext().getResources(), R.color.rowSelected, null));
@@ -96,8 +96,12 @@ public class FoodAdapter extends
         }
     }
 
-    public void addContext(Context context) {
+    public void setContext(Context context) {
         this.context = context;
+    }
+
+    public int getSelected() {
+        return selected;
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -134,9 +138,9 @@ public class FoodAdapter extends
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
                 FoodAdapter.this.select(position);
                 notifyDataSetChanged();
-                if (context.getClass().equals(MainActivity.class)) {
+                if (fragment != null) {
                     try {
-                        ((MainActivity) context).resetButtons();
+                        fragment.resetButtons(fragment.getView(), selected);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

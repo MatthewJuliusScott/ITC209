@@ -5,6 +5,19 @@ import android.os.Parcelable;
 
 public class Food implements Parcelable {
 
+    public static final Parcelable.Creator<Food> CREATOR
+            = new Parcelable.Creator<Food>() {
+
+        @Override
+        public Food createFromParcel(Parcel in) {
+            return new Food(in);
+        }
+
+        @Override
+        public Food[] newArray(int size) {
+            return new Food[size];
+        }
+    };
     private String name;
     private int calories;
     private float fat;
@@ -96,18 +109,4 @@ public class Food implements Parcelable {
         out.writeFloat(protein);
         out.writeFloat(carbohydrates);
     }
-
-    public static final Parcelable.Creator<Food> CREATOR
-            = new Parcelable.Creator<Food>() {
-
-        @Override
-        public Food createFromParcel(Parcel in) {
-            return new Food(in);
-        }
-
-        @Override
-        public Food[] newArray(int size) {
-            return new Food[size];
-        }
-    };
 }

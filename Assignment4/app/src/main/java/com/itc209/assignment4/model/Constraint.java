@@ -6,9 +6,11 @@ public class Constraint {
     private boolean isGoal;
     private float amount;
     private Type type;
+
     public Constraint() {
         super();
     }
+
     public Constraint(int id, boolean isGoal, float amount, Type type) {
         super();
         this.id = id;

@@ -19,11 +19,8 @@ public class FoodDao {
     public static final String PROTEIN = "protein";
     public static final String CARBOHYDRATES = "carbohydrates";
     public static final String TABLE_NAME = "food";
-
-    private DatabaseHelper dbHelper;
-
     private final Context context;
-
+    private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
     public FoodDao(Context context) {

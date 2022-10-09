@@ -92,7 +92,7 @@ public class IntakeAdapter extends
         return intakes.size();
     }
 
-    public void addContext(Context context) {
+    public void setContext(Context context) {
         this.context = context;
     }
 

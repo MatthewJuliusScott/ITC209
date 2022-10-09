@@ -1,17 +1,18 @@
 package com.itc209.assignment4;
 
 import android.app.Dialog;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.itc209.assignment4.adapter.FoodAdapter;
 import com.itc209.assignment4.model.Food;
@@ -23,10 +24,10 @@ public class SearchResultsFragment extends DialogFragment {
 
     // Add RecyclerView member
     private RecyclerView recyclerView;
+    private ArrayList<Food> foods;
+
     public SearchResultsFragment() {
     }
-
-    private ArrayList<Food> foods;
 
     private SearchResultsFragment(List<Food> foods) {
         this.foods = (ArrayList<Food>) foods;
@@ -38,12 +39,10 @@ public class SearchResultsFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if (dialog != null)
-        {
+        if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
@@ -71,8 +70,22 @@ public class SearchResultsFragment extends DialogFragment {
         recyclerView = view.findViewById(R.id.searchResultsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(new FoodAdapter(foods));
-
+        FoodAdapter foodAdapter = new FoodAdapter(foods);
+        recyclerView.setAdapter(foodAdapter);
+        foodAdapter.setContext(getContext());
+        foodAdapter.setFragment(this);
+        resetButtons(view, foodAdapter.getSelected());
         return view;
+    }
+
+    public void resetButtons(View view, int selected) {
+        Button button = (Button) view.findViewById(R.id.button_add_search_result_to_intake);
+        if (selected > -1) {
+            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
+            button.setEnabled(true);
+        } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+            button.setEnabled(false);
+        }
     }
 }

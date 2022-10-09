@@ -2,7 +2,6 @@ package com.itc209.assignment4;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         List<Intake> intakes = intakeController.getIntakesByTime(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
         IntakeAdapter adapter = new IntakeAdapter(intakes);
-        adapter.addContext(MainActivity.this);
+        adapter.setContext(MainActivity.this);
         removeIntakeRecyclerView.setAdapter(adapter);
         removeIntakeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

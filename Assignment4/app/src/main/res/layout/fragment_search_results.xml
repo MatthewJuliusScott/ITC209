@@ -74,7 +74,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/buttonAddFoodToIntake"
+            android:id="@+id/button_add_search_result_to_intake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/positive"
@@ -85,7 +85,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/buttonRemoveFoodFromIntake"
+            android:id="@+id/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
