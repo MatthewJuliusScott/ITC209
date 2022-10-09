@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,12 +32,13 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.itc209.assignment4.adapter.IntakeAdapter;
-import com.itc209.assignment4.controller.ConstraintController;
+import com.itc209.assignment4.controller.ConstraintsController;
 import com.itc209.assignment4.controller.FoodController;
 import com.itc209.assignment4.controller.IntakeController;
 import com.itc209.assignment4.formatter.GramsFormatter;
 import com.itc209.assignment4.formatter.KiloJouleFormatter;
 import com.itc209.assignment4.formatter.NutritionFormatter;
+import com.itc209.assignment4.model.Constraints;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String CHANNEL_ID = "9b7494ad-b68a-4863-b191-c13e981d3b78";
     private FoodController foodController;
     private IntakeController intakeController;
-    private ConstraintController constraintController;
+    private ConstraintsController constraintsController;
     private BarChart chart;
 
     private void setGraphData() throws Exception {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         foodController = new FoodController(getApplicationContext());
         intakeController = new IntakeController(getApplicationContext(), foodController);
-        constraintController = new ConstraintController(getApplicationContext(), intakeController);
+        constraintsController = new ConstraintsController(getApplicationContext(), intakeController);
 
         try {
             drawGraph();
@@ -304,11 +304,24 @@ public class MainActivity extends AppCompatActivity {
         // add the new intake to the view
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
-        intakeAdapter.add(intake);
+        if (intakeAdapter != null) {
+            intakeAdapter.add(intake);
+        }
         setGraphData();
+
+        List<Notification> notifications = constraintsController.checkTriggers();
+        for (Notification notification : notifications){
+            sendNotification(notification);
+        }
     }
 
     public void setDailyGoals(View view) {
-        // TODO implement
+        FragmentManager fm = getSupportFragmentManager();
+        DailyGoalsLimitsFragment fragment = DailyGoalsLimitsFragment.newInstance(constraintsController.getConstraints());
+        fragment.show(fm, "fragment_set_daily_goals_limits");
+    }
+
+    public void saveConstraints(Constraints constraints) {
+        constraintsController.saveConstraints(constraints);
     }
 }

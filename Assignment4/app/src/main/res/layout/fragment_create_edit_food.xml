@@ -62,7 +62,7 @@
                             android:layout_weight="9"
                             android:background="@color/input"
                             android:ems="10"
-                            android:hint="@string/food_name"
+                            android:hint="@string/lbl_name"
                             android:inputType="text"
                             android:minHeight="26sp" />
                     </LinearLayout>
@@ -89,7 +89,7 @@
                             android:background="@color/input"
                             android:digits="0123456789"
                             android:ems="10"
-                            android:hint="@string/food_calories"
+                            android:hint="@string/lbl_calories"
                             android:inputType="numberSigned"
                             android:minHeight="26sp" />
                     </LinearLayout>
@@ -116,7 +116,7 @@
                             android:background="@color/input"
                             android:digits="0123456789."
                             android:ems="10"
-                            android:hint="@string/food_protein"
+                            android:hint="@string/lbl_protein"
                             android:inputType="numberDecimal"
                             android:minHeight="26sp" />
                     </LinearLayout>
@@ -143,7 +143,7 @@
                             android:background="@color/input"
                             android:digits="0123456789."
                             android:ems="10"
-                            android:hint="@string/food_carbohydrates"
+                            android:hint="@string/lbl_carbohydrates"
                             android:inputType="numberDecimal"
                             android:minHeight="26sp" />
                     </LinearLayout>
@@ -169,7 +169,7 @@
                             android:layout_weight="9"
                             android:background="@color/input"
                             android:ems="10"
-                            android:hint="@string/food_fat"
+                            android:hint="@string/lbl_fat"
                             android:inputType="numberDecimal"
                             android:minHeight="26sp" />
 

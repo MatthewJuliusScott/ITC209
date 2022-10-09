@@ -1,6 +1,7 @@
 package com.itc209.assignment4;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -8,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +17,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -40,8 +37,6 @@ public class CreateEditFoodFragment extends DialogFragment {
 
     private Food food;
 
-    private PieChart chart;
-
     public CreateEditFoodFragment() {
     }
 
@@ -50,8 +45,7 @@ public class CreateEditFoodFragment extends DialogFragment {
     }
 
     public static CreateEditFoodFragment newInstance(Food food) {
-        CreateEditFoodFragment fragment = new CreateEditFoodFragment(food);
-        return fragment;
+        return new CreateEditFoodFragment(food);
     }
 
     @Override
@@ -72,7 +66,7 @@ public class CreateEditFoodFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Inflate the layout for this fragment
@@ -111,71 +105,96 @@ public class CreateEditFoodFragment extends DialogFragment {
         name.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                resetButtons(getView());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                View view = getView();
+                if (view != null) {
+                    resetButtons(view);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         calories.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                resetButtons(getView());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                View view = getView();
+                if (view != null) {
+                    resetButtons(view);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         protein.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                resetButtons(getView());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                View view = getView();
+                if (view != null) {
+                    resetButtons(view);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         carbohydrates.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                resetButtons(getView());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                View view = getView();
+                if (view != null) {
+                    resetButtons(view);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         fat.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                resetButtons(getView());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                View view = getView();
+                if (view != null) {
+                    resetButtons(view);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         return view;
@@ -194,10 +213,10 @@ public class CreateEditFoodFragment extends DialogFragment {
         // if food details have been filled in
         if (Utils.isNotBlank(name) && Utils.isNotBlank(caloriesStr) && Utils.isNotBlank(proteinStr) && Utils.isNotBlank(carbohydratesStr) && Utils.isNotBlank(fatStr)) {
 
-            food = new Food(name, Integer.parseInt(caloriesStr), Float.parseFloat(fatStr), Float.parseFloat(proteinStr), Float.parseFloat(carbohydratesStr) );
+            food = new Food(name, Integer.parseInt(caloriesStr), Float.parseFloat(fatStr), Float.parseFloat(proteinStr), Float.parseFloat(carbohydratesStr));
 
             // create the pie chart of the food's nutrition profile
-            chart = view.findViewById(R.id.chart_food);
+            PieChart chart = view.findViewById(R.id.chart_food);
             chart.setUsePercentValues(true);
             chart.getDescription().setEnabled(false);
             chart.setDrawHoleEnabled(false);
@@ -210,7 +229,10 @@ public class CreateEditFoodFragment extends DialogFragment {
             chart.setEntryLabelColor(Color.BLACK);
 
             PieDataSet dataSet = new PieDataSet(entries, "");
-            dataSet.setColors(ContextCompat.getColor(getContext(), R.color.protein), ContextCompat.getColor(getContext(), R.color.fat), ContextCompat.getColor(getContext(), R.color.carbohydrates));
+            Context context = getContext();
+            if (context != null) {
+                dataSet.setColors(ContextCompat.getColor(context, R.color.protein), ContextCompat.getColor(context, R.color.fat), ContextCompat.getColor(context, R.color.carbohydrates));
+            }
             PieData data = new PieData(dataSet);
             data.setValueFormatter(new PercentFormatter());
             data.setValueTextSize(16f);
@@ -244,7 +266,10 @@ public class CreateEditFoodFragment extends DialogFragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    getDialog().dismiss();
+                    Dialog dialog = getDialog();
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
                 }
             });
         } else {
@@ -254,6 +279,11 @@ public class CreateEditFoodFragment extends DialogFragment {
         }
 
         // cancel button
-        cancelButton.setOnClickListener(v -> getDialog().dismiss());
+        cancelButton.setOnClickListener(v -> {
+            Dialog dialog = getDialog();
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+        });
     }
 }

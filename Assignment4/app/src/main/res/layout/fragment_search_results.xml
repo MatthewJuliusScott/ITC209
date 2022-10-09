@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:background="@color/rowHeader"
-                android:text="@string/food_name"
+                android:text="@string/lbl_name"
                 android:textColor="@color/white" />
 
             <TextView
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/rowHeader"
-                android:text="@string/food_calories"
+                android:text="@string/lbl_calories_short"
                 android:textColor="@color/white" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/rowHeader"
-                android:text="@string/food_fat"
+                android:text="@string/lbl_fat"
                 android:textColor="@color/white" />
 
             <TextView
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/rowHeader"
-                android:text="@string/food_protein"
+                android:text="@string/lbl_protein"
                 android:textColor="@color/white" />
 
             <TextView
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/rowHeader"
-                android:text="@string/food_carbohydrates"
+                android:text="@string/lbl_carbohydrates_short"
                 android:textColor="@color/white" />
         </LinearLayout>
 

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.itc209.assignment4.MainActivity;
 import com.itc209.assignment4.R;
 import com.itc209.assignment4.SearchResultsFragment;
 import com.itc209.assignment4.model.Food;
@@ -25,25 +24,22 @@ public class FoodAdapter extends
 
     private final List<Food> foods;
     private int selected = -1;
-    private Context context;
-
-    public void setFragment(SearchResultsFragment fragment) {
-        this.fragment = fragment;
-    }
-
     private SearchResultsFragment fragment;
 
     public FoodAdapter(List<Food> foods) {
         this.foods = foods;
     }
 
-    public int select(int position) {
+    public void setFragment(SearchResultsFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public void select(int position) {
         if (selected == position) {
             selected = -1;
         } else {
             selected = position;
         }
-        return selected;
     }
 
     @NonNull
@@ -96,10 +92,6 @@ public class FoodAdapter extends
         }
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
     public int getSelected() {
         return selected;
     }
@@ -140,7 +132,10 @@ public class FoodAdapter extends
                 notifyDataSetChanged();
                 if (fragment != null) {
                     try {
-                        fragment.resetButtons(fragment.getView(), selected);
+                        View fragmentView = fragment.getView();
+                        if (fragmentView != null) {
+                            fragment.resetButtons(fragmentView, selected);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

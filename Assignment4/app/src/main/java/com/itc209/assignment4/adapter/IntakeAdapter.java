@@ -29,13 +29,12 @@ public class IntakeAdapter extends
         this.intakes = intakes;
     }
 
-    public int select(int position) {
+    public void select(int position) {
         if (selected == position) {
             selected = -1;
         } else {
             selected = position;
         }
-        return selected;
     }
 
     public void add(Intake intake) {

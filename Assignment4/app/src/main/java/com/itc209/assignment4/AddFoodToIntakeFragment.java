@@ -14,7 +14,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.button.MaterialButton;
-import com.itc209.assignment4.model.Food;
 
 public class AddFoodToIntakeFragment extends DialogFragment {
 

@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String create_food_table = "CREATE TABLE " + FoodDao.TABLE_NAME + " (" + FoodDao.NAME + " TEXT PRIMARY KEY, " + FoodDao.CALORIES + " INTEGER, " + FoodDao.FAT + " REAL, " + FoodDao.PROTEIN + " REAL, " + FoodDao.CARBOHYDRATES + " REAL);";
         String create_intake_table = "CREATE TABLE " + IntakeDao.TABLE_NAME + " (" + IntakeDao.FOOD_NAME + " NAME, " + IntakeDao.TIME + " DATETIME, PRIMARY KEY (" + IntakeDao.FOOD_NAME + ", " + IntakeDao.TIME + "));";
-        String create_constraint_table = "CREATE TABLE " + ConstraintDao.TABLE_NAME + " (id INTEGER PRIMARY KEY, " + ConstraintDao.IS_GOAL + " BOOLEAN, " + ConstraintDao.AMOUNT + " REAL, " + ConstraintDao.TYPE + " INTEGER);";
+        String create_constraint_table = "CREATE TABLE " + ConstraintsDao.TABLE_NAME + " (" + ConstraintsDao.CALORIES_GOAL + " INTEGER, " + ConstraintsDao.FAT_GOAL + " REAL, " + ConstraintsDao.PROTEIN_GOAL + " REAL, " + ConstraintsDao.CARBOHYDRATES_GOAL + " REAL, " + ConstraintsDao.CALORIES_LIMIT + " INTEGER, " + ConstraintsDao.FAT_LIMIT + " REAL, " + ConstraintsDao.PROTEIN_LIMIT + " REAL, " + ConstraintsDao.CARBOHYDRATES_LIMIT + " REAL , PRIMARY KEY (" + ConstraintsDao.CALORIES_GOAL + ", " + ConstraintsDao.FAT_GOAL + ", " +  ConstraintsDao.PROTEIN_GOAL + ", " +  ConstraintsDao.CARBOHYDRATES_GOAL + ", " +  ConstraintsDao.CALORIES_LIMIT + ", " +  ConstraintsDao.FAT_LIMIT + ", " +  ConstraintsDao.PROTEIN_LIMIT + ", " +  ConstraintsDao.CARBOHYDRATES_LIMIT + "));";
 
         db.execSQL(create_food_table);
         db.execSQL(create_intake_table);
