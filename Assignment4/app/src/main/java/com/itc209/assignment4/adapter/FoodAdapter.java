@@ -12,21 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.itc209.assignment4.MainActivity;
 import com.itc209.assignment4.R;
-import com.itc209.assignment4.model.Intake;
+import com.itc209.assignment4.model.Food;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class IntakeAdapter extends
-        RecyclerView.Adapter<IntakeAdapter.ViewHolder> {
+public class FoodAdapter extends
+        RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
-    private final List<Intake> intakes;
+    private final List<Food> foods;
     private int selected = -1;
     private Context context;
 
-    public IntakeAdapter(List<Intake> intakes) {
-        this.intakes = intakes;
+    public FoodAdapter(List<Food> foods) {
+        this.foods = foods;
     }
 
     public int select(int position) {
@@ -38,16 +38,9 @@ public class IntakeAdapter extends
         return selected;
     }
 
-    public void removeSelected() {
-        intakes.remove(selected);
-        notifyItemRemoved(selected);
-        selected = -1;
-        notifyDataSetChanged();
-    }
-
-    public Intake getSelectedIntake() {
+    public Food getSelectedFood() {
         if (selected > -1) {
-            return intakes.get(selected);
+            return foods.get(selected);
         }
         return null;
     }
@@ -59,7 +52,7 @@ public class IntakeAdapter extends
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.item_intake, parent, false);
+        View contactView = inflater.inflate(R.layout.item_food, parent, false);
 
         // Return a new holder instance
         return new ViewHolder(contactView);
@@ -67,16 +60,22 @@ public class IntakeAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Intake intake = intakes.get(position);
+        Food food = foods.get(position);
 
         TextView nameTextView = holder.nameTextView;
-        nameTextView.setText(intake.getFood().getName());
-
-        TextView timeTextView = holder.timeTextView;
-        timeTextView.setText(sdf.format(intake.getDate()));
+        nameTextView.setText(food.getName());
 
         TextView caloriesTextView = holder.caloriesTextView;
-        caloriesTextView.setText(String.valueOf(intake.getFood().getCalories()));
+        caloriesTextView.setText(String.valueOf(food.getCalories()));
+
+        TextView fatTextView = holder.fatTextView;
+        fatTextView.setText(String.valueOf(food.getCalories()));
+
+        TextView proteinTextView = holder.proteinTextView;
+        proteinTextView.setText(String.valueOf(food.getCalories()));
+
+        TextView carbohydratesTextView = holder.carbohydratesTextView;
+        carbohydratesTextView.setText(String.valueOf(food.getCalories()));
 
         if (position == selected) {
             holder.itemView.setBackgroundColor(ResourcesCompat.getColor(nameTextView.getContext().getResources(), R.color.rowSelected, null));
@@ -89,7 +88,7 @@ public class IntakeAdapter extends
 
     @Override
     public int getItemCount() {
-        return intakes.size();
+        return foods.size();
     }
 
     public void addContext(Context context) {
@@ -102,8 +101,10 @@ public class IntakeAdapter extends
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView nameTextView;
-        public TextView timeTextView;
         public TextView caloriesTextView;
+        public TextView fatTextView;
+        public TextView proteinTextView;
+        public TextView carbohydratesTextView;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -112,9 +113,11 @@ public class IntakeAdapter extends
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            nameTextView = itemView.findViewById(R.id.intake_name);
-            timeTextView = itemView.findViewById(R.id.intake_time);
-            caloriesTextView = itemView.findViewById(R.id.intake_calories);
+            nameTextView = itemView.findViewById(R.id.food_name);
+            caloriesTextView = itemView.findViewById(R.id.food_calories);
+            fatTextView = itemView.findViewById(R.id.food_fat);
+            proteinTextView = itemView.findViewById(R.id.food_protein);
+            carbohydratesTextView = itemView.findViewById(R.id.food_carbohydrates);
 
             itemView.setOnClickListener(this);
         }
@@ -124,7 +127,7 @@ public class IntakeAdapter extends
         public void onClick(View view) {
             int position = getAdapterPosition(); // gets item position
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                IntakeAdapter.this.select(position);
+                FoodAdapter.this.select(position);
                 notifyDataSetChanged();
                 if (context.getClass().equals(MainActivity.class)) {
                     try {

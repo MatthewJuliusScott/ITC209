@@ -6,13 +6,11 @@ import com.itc209.assignment4.dao.FoodDao;
 import com.itc209.assignment4.model.Food;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +70,7 @@ public class FoodController {
                     for (int j = 0; j < nutrients.length(); j++) {
                         JSONObject nutrient = nutrients.getJSONObject(j);
                         if (nutrient.getString("name").equals("Energy")) {
-                            food.setCalories((int)(nutrient.getInt("per_100g") * amount));
+                            food.setCalories((int) (nutrient.getInt("per_100g") * amount));
                             energyFound = true;
                         }
                         if (nutrient.getString("name").equals("Fat")) {

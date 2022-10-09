@@ -1,6 +1,5 @@
 package com.itc209.assignment4;
 
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -18,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +31,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.google.android.material.button.MaterialButton;
 import com.itc209.assignment4.adapter.IntakeAdapter;
 import com.itc209.assignment4.controller.ConstraintController;
 import com.itc209.assignment4.controller.FoodController;
@@ -116,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     public void displaySearchResults(View view) {
         System.out.println("search results");
         if (view instanceof TextView) {
-            String keyword = ((TextView)view).getText().toString();
+            String keyword = ((TextView) view).getText().toString();
             List<Food> foods = foodController.findFoodsByKeyword(keyword);
             for (Food food : foods) {
                 System.out.println();
@@ -194,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         leftAxis.setLabelCount(8, false);
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0);
         chart.setRendererRightYAxis(new NoOpAxisRenderer(chart.getViewPortHandler(), chart.getAxisLeft(), chart.getTransformer(YAxis.AxisDependency.RIGHT)));
 
         Legend legend = chart.getLegend();

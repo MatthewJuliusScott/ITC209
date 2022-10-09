@@ -14,16 +14,12 @@ import java.util.List;
 
 public class IntakeDao {
 
-    FoodDao foodDao;
-
     public static final String TIME = "time";
     public static final String FOOD_NAME = "foodName";
     public static final String TABLE_NAME = "intake";
-
-    private DatabaseHelper dbHelper;
-
     private final Context context;
-
+    FoodDao foodDao;
+    private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
     public IntakeDao(Context context, FoodDao foodDao) {

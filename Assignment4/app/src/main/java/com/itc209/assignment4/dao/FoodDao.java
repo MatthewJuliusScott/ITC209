@@ -22,7 +22,7 @@ public class FoodDao {
 
     private DatabaseHelper dbHelper;
 
-    private Context context;
+    private final Context context;
 
     private SQLiteDatabase database;
 

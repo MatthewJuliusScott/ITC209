@@ -12,10 +12,8 @@ import java.util.List;
 public class IntakeController {
 
     private final Context context;
-
-    FoodController foodController;
-
     private final IntakeDao intakeDao;
+    FoodController foodController;
 
     public IntakeController(Context context, FoodController foodController) {
         super();

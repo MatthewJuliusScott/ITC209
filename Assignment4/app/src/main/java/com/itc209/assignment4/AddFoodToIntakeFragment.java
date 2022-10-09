@@ -17,10 +17,10 @@ import com.google.android.material.button.MaterialButton;
 
 public class AddFoodToIntakeFragment extends DialogFragment {
 
+    Dialog dialog = null;
+
     public AddFoodToIntakeFragment() {
     }
-
-    Dialog dialog = null;
 
     public static AddFoodToIntakeFragment newInstance(String title) {
         AddFoodToIntakeFragment fragment = new AddFoodToIntakeFragment();
@@ -46,7 +46,7 @@ public class AddFoodToIntakeFragment extends DialogFragment {
                 dialog.dismiss();
                 FragmentActivity activity = getActivity();
                 if (activity instanceof MainActivity) {
-                    ((MainActivity)activity).search(view);
+                    ((MainActivity) activity).search(view);
                 }
             }
         });
@@ -59,7 +59,7 @@ public class AddFoodToIntakeFragment extends DialogFragment {
                 dialog.dismiss();
                 FragmentActivity activity = getActivity();
                 if (activity instanceof MainActivity) {
-                    ((MainActivity)activity).enterNewFood(view);
+                    ((MainActivity) activity).enterNewFood(view);
                 }
             }
         });
@@ -72,7 +72,7 @@ public class AddFoodToIntakeFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
-        EditText mEditText = (EditText) view.findViewById(R.id.txt_enter_name);
+        EditText mEditText = view.findViewById(R.id.txt_enter_name);
         // Show soft keyboard automatically and request focus to field
         mEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(

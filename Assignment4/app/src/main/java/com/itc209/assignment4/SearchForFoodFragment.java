@@ -14,10 +14,10 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 public class SearchForFoodFragment extends DialogFragment {
+    Dialog dialog = null;
+
     public SearchForFoodFragment() {
     }
-
-    Dialog dialog = null;
 
     public static SearchForFoodFragment newInstance(String title) {
         SearchForFoodFragment fragment = new SearchForFoodFragment();
@@ -51,7 +51,7 @@ public class SearchForFoodFragment extends DialogFragment {
                 dialog.dismiss();
                 FragmentActivity activity = getActivity();
                 if (activity instanceof MainActivity) {
-                    ((MainActivity)activity).displaySearchResults(editText);
+                    ((MainActivity) activity).displaySearchResults(editText);
                 }
                 return true;
             }

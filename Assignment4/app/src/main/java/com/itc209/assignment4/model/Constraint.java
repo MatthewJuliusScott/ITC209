@@ -2,28 +2,19 @@ package com.itc209.assignment4.model;
 
 public class Constraint {
 
+    private int id;
+    private boolean isGoal;
+    private float amount;
+    private Type type;
     public Constraint() {
         super();
     }
-
     public Constraint(int id, boolean isGoal, float amount, Type type) {
         super();
         this.id = id;
         this.isGoal = isGoal;
         this.amount = amount;
         this.type = type;
-    }
-
-    private int id;
-    private boolean isGoal;
-    private float amount;
-    private Type type;
-
-    public enum Type {
-        PROTEIN,
-        FAT,
-        CARBOHYDRATE,
-        CALORIE
     }
 
     public boolean isGoal() {
@@ -56,5 +47,12 @@ public class Constraint {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public enum Type {
+        PROTEIN,
+        FAT,
+        CARBOHYDRATE,
+        CALORIE
     }
 }

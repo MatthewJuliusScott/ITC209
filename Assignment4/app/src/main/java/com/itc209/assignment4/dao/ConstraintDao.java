@@ -18,11 +18,8 @@ public class ConstraintDao {
     public static final String AMOUNT = "amount";
     public static final String TYPE = "type";
     public static final String TABLE_NAME = "food_constraint";
-
-    private DatabaseHelper dbHelper;
-
     private final Context context;
-
+    private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
 
     public ConstraintDao(Context context) {

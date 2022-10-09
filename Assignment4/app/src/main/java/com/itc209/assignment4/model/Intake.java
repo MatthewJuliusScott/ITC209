@@ -4,18 +4,17 @@ import java.util.Date;
 
 public class Intake {
 
+    private Date date;
+    private Food food;
+
     public Intake() {
         super();
     }
-
     public Intake(Date date, Food food) {
         super();
         this.date = date;
         this.food = food;
     }
-
-    private Date date;
-    private Food food;
 
     public Date getDate() {
         return date;
