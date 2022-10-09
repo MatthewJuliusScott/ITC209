@@ -1,64 +1,78 @@
 package com.itc209.assignment4;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchResultsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SearchResultsFragment extends Fragment {
+import com.itc209.assignment4.adapter.FoodAdapter;
+import com.itc209.assignment4.model.Food;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class SearchResultsFragment extends DialogFragment {
 
+    // Add RecyclerView member
+    private RecyclerView recyclerView;
     public SearchResultsFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchResultsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchResultsFragment newInstance(String param1, String param2) {
-        SearchResultsFragment fragment = new SearchResultsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    private ArrayList<Food> foods;
+
+    private SearchResultsFragment(List<Food> foods) {
+        this.foods = (ArrayList<Food>) foods;
+    }
+
+    public static SearchResultsFragment newInstance(List<Food> foods) {
+        SearchResultsFragment fragment = new SearchResultsFragment(foods);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onStart()
+    {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("foods", foods);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        super.onCreateView(inflater, container, savedInstanceState);
+        if (savedInstanceState != null) {
+            foods = savedInstanceState.getParcelableArrayList("foods");
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_results, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_results, container, false);
+
+        // Add the following lines to create RecyclerView
+        recyclerView = view.findViewById(R.id.searchResultsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setAdapter(new FoodAdapter(foods));
+
+        return view;
     }
 }

@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
             for (Food food : foods) {
                 System.out.println();
             }
+            FragmentManager fm = getSupportFragmentManager();
+            SearchResultsFragment fragment = SearchResultsFragment.newInstance(foods);
+            fragment.show(fm, "fragment_search_results");
         }
     }
 
@@ -292,8 +295,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setDailyGoals(View view) {
-        Intent setDailyGoals = new Intent(MainActivity.this, SetDailyGoals.class);
-        startActivity(setDailyGoals);
-        finish();
+        // TODO implement
     }
 }

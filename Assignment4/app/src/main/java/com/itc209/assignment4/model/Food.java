@@ -1,6 +1,9 @@
 package com.itc209.assignment4.model;
 
-public class Food {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Food implements Parcelable {
 
     private String name;
     private int calories;
@@ -10,6 +13,14 @@ public class Food {
 
     public Food() {
         super();
+    }
+
+    private Food(Parcel in) {
+        this.name = in.readString();
+        this.calories = in.readInt();
+        this.fat = in.readFloat();
+        this.protein = in.readFloat();
+        this.carbohydrates = in.readFloat();
     }
 
     public Food(String name, int calories, float fat, float protein, float carbohydrates) {
@@ -71,4 +82,32 @@ public class Food {
                 ", carbohydrates=" + carbohydrates +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(name);
+        out.writeInt(calories);
+        out.writeFloat(fat);
+        out.writeFloat(protein);
+        out.writeFloat(carbohydrates);
+    }
+
+    public static final Parcelable.Creator<Food> CREATOR
+            = new Parcelable.Creator<Food>() {
+
+        @Override
+        public Food createFromParcel(Parcel in) {
+            return new Food(in);
+        }
+
+        @Override
+        public Food[] newArray(int size) {
+            return new Food[size];
+        }
+    };
 }

@@ -15,6 +15,7 @@ import com.itc209.assignment4.R;
 import com.itc209.assignment4.model.Food;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodAdapter extends
@@ -69,13 +70,13 @@ public class FoodAdapter extends
         caloriesTextView.setText(String.valueOf(food.getCalories()));
 
         TextView fatTextView = holder.fatTextView;
-        fatTextView.setText(String.valueOf(food.getCalories()));
+        fatTextView.setText(String.valueOf(food.getFat()));
 
         TextView proteinTextView = holder.proteinTextView;
-        proteinTextView.setText(String.valueOf(food.getCalories()));
+        proteinTextView.setText(String.valueOf(food.getProtein()));
 
         TextView carbohydratesTextView = holder.carbohydratesTextView;
-        carbohydratesTextView.setText(String.valueOf(food.getCalories()));
+        carbohydratesTextView.setText(String.valueOf(food.getCarbohydrates()));
 
         if (position == selected) {
             holder.itemView.setBackgroundColor(ResourcesCompat.getColor(nameTextView.getContext().getResources(), R.color.rowSelected, null));
@@ -88,7 +89,11 @@ public class FoodAdapter extends
 
     @Override
     public int getItemCount() {
-        return foods.size();
+        if (foods != null) {
+            return foods.size();
+        } else {
+            return 0;
+        }
     }
 
     public void addContext(Context context) {

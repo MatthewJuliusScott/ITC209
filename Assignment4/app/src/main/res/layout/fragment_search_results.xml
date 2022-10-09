@@ -17,6 +17,15 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/search_results_header_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:background="@color/rowHeader"
+                android:text="@string/food_name"
+                android:textColor="@color/white" />
+
+            <TextView
                 android:id="@+id/search_results_header_calories"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
