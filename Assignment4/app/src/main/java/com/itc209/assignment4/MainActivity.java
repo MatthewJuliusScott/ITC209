@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             dataSets.add(set1);
 
             BarData data = new BarData(dataSets);
+            data.setDrawValues(false);
             data.setValueTextSize(10f);
             data.setBarWidth(0.9f);
 
