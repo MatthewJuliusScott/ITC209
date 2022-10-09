@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,8 +36,8 @@ import com.itc209.assignment4.controller.ConstraintController;
 import com.itc209.assignment4.controller.FoodController;
 import com.itc209.assignment4.controller.IntakeController;
 import com.itc209.assignment4.formatter.GramsFormatter;
+import com.itc209.assignment4.formatter.KiloJouleFormatter;
 import com.itc209.assignment4.formatter.NutritionFormatter;
-import com.itc209.assignment4.graph.NoOpAxisRenderer;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 import com.itc209.assignment4.model.Notification;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         values.add(new BarEntry(Nutrient.PROTEIN.ordinal(), totalFood.getProtein()));
         values.add(new BarEntry(Nutrient.FAT.ordinal(), totalFood.getFat()));
         values.add(new BarEntry(Nutrient.CARBOHYDRATE.ordinal(), totalFood.getCarbohydrates()));
+        values.add(new BarEntry(Nutrient.CALORIES.ordinal(), totalFood.getCalories()));
 
         BarDataSet set1;
 
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             set1 = new BarDataSet(values, null);
             set1.setDrawIcons(false);
 
-            set1.setColors(new int[]{R.color.protein, R.color.fat, R.color.carbohydrates}, MainActivity.this);
+            set1.setColors(new int[]{R.color.protein, R.color.fat, R.color.carbohydrates, R.color.calories}, MainActivity.this);
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
-        xAxis.setLabelCount(3);
+        xAxis.setLabelCount(4);
         xAxis.setValueFormatter(new NutritionFormatter());
 
         YAxis leftAxis = chart.getAxisLeft();
@@ -181,7 +183,13 @@ public class MainActivity extends AppCompatActivity {
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
         leftAxis.setAxisMinimum(0);
-        chart.setRendererRightYAxis(new NoOpAxisRenderer(chart.getViewPortHandler(), chart.getAxisLeft(), chart.getTransformer(YAxis.AxisDependency.RIGHT)));
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setValueFormatter(new KiloJouleFormatter());
+        rightAxis.setLabelCount(8, false);
+        rightAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+        rightAxis.setSpaceTop(15f);
+        rightAxis.setAxisMinimum(0);
 
         Legend legend = chart.getLegend();
         legend.setEnabled(false);

@@ -16,7 +16,8 @@
     <color name="rowAlternate">#ffcac4d0</color>
     <color name="rowSelected">#ffffaeae</color>
     <color name="rowHeader">#ff3c0a77</color>
-    <color name="protein">#ffd9b859</color>
-    <color name="fat">#ff8771c1</color>
-    <color name="carbohydrates">#ff2371a9</color>
+    <color name="protein">#ff4198d7</color>
+    <color name="fat">#ff7a61ba</color>
+    <color name="carbohydrates">#ff4198d7</color>
+    <color name="calories">#ffff9090</color>
 </resources>

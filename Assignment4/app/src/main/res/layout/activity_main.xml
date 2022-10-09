@@ -57,7 +57,7 @@
                     android:background="@color/rowHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="4"
                     />
 
                 <TextView
@@ -85,27 +85,26 @@
             android:id="@+id/scrollViewDailyFoodIntake"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:paddingBottom="50dp"
             android:contentDescription="@string/daily_food_intake">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/removeIntakeRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/chart1"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_weight="1" />
-
+                    android:layout_height="match_parent"
+                    android:minHeight="130dp"/>
 
             </LinearLayout>
         </ScrollView>

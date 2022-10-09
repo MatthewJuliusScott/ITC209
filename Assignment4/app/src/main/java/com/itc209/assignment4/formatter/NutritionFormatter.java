@@ -12,6 +12,8 @@ public class NutritionFormatter extends ValueFormatter {
             return "Fat";
         } else if (value == (float) Nutrient.CARBOHYDRATE.ordinal()) {
             return "Carbs";
+        } else if (value == (float) Nutrient.CALORIES.ordinal()) {
+            return "Cals";
         } else {
             return "";
         }
