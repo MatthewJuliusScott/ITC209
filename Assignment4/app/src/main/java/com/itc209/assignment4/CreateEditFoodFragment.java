@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -83,7 +85,7 @@ public class CreateEditFoodFragment extends DialogFragment {
         EditText carbohydrates = view.findViewById(R.id.txt_carbohydrates);
         EditText fat = view.findViewById(R.id.txt_fat);
 
-        // set orientation and gravity of layout
+        // set orientation of layout
         LinearLayout layout = view.findViewById(R.id.create_edit_food_container);
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -194,7 +196,42 @@ public class CreateEditFoodFragment extends DialogFragment {
 
             food = new Food(name, Integer.parseInt(caloriesStr), Float.parseFloat(fatStr), Float.parseFloat(proteinStr), Float.parseFloat(carbohydratesStr) );
 
-            drawChart(view);
+            // create the pie chart of the food's nutrition profile
+            chart = view.findViewById(R.id.chart_food);
+            chart.setUsePercentValues(true);
+            chart.getDescription().setEnabled(false);
+            chart.setDrawHoleEnabled(false);
+            chart.setEntryLabelTextSize(18f);
+
+            ArrayList<PieEntry> entries = new ArrayList<>();
+            entries.add(new PieEntry(food.getCarbohydrates(), "Carbs"));
+            entries.add(new PieEntry(food.getFat(), "Fat"));
+            entries.add(new PieEntry(food.getProtein(), "Protein"));
+            chart.setEntryLabelColor(Color.BLACK);
+
+            PieDataSet dataSet = new PieDataSet(entries, "");
+            dataSet.setColors(ContextCompat.getColor(getContext(), R.color.protein), ContextCompat.getColor(getContext(), R.color.fat), ContextCompat.getColor(getContext(), R.color.carbohydrates));
+            PieData data = new PieData(dataSet);
+            data.setValueFormatter(new PercentFormatter());
+            data.setValueTextSize(16f);
+            data.setValueTextColor(Color.BLACK);
+            chart.animateY(1400, Easing.EaseInOutQuad);
+
+            Legend legend = chart.getLegend();
+            legend.setEnabled(false);
+
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                chart.setExtraOffsets(5, 20, 5, 20);
+                chart.setMinimumHeight(displayMetrics.heightPixels - 300);
+            } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                chart.setExtraOffsets(5, 0, 5, 150);
+                chart.setMinimumHeight(displayMetrics.heightPixels - 50);
+            }
+
+            chart.setData(data);
+            chart.invalidate();
 
             // save food button enabled
             addButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
@@ -218,31 +255,5 @@ public class CreateEditFoodFragment extends DialogFragment {
 
         // cancel button
         cancelButton.setOnClickListener(v -> getDialog().dismiss());
-    }
-
-    private void drawChart(View view) {
-        // create the pie chart of the food's nutrition profile
-        chart = view.findViewById(R.id.chart_food);
-        chart.setUsePercentValues(true);
-        chart.getDescription().setEnabled(false);
-        chart.setDrawHoleEnabled(false);
-        chart.setEntryLabelTextSize(18f);
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(food.getCarbohydrates(), "Carbohydrates"));
-        entries.add(new PieEntry(food.getFat(), "Fat"));
-        entries.add(new PieEntry(food.getProtein(), "Protein"));
-
-        PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setColors(ContextCompat.getColor(getContext(), R.color.protein), ContextCompat.getColor(getContext(), R.color.fat), ContextCompat.getColor(getContext(), R.color.carbohydrates));
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(16f);
-        data.setValueTextColor(Color.WHITE);
-        chart.setData(data);
-        chart.invalidate();
-
-        Legend legend = chart.getLegend();
-        legend.setEnabled(false);
     }
 }
