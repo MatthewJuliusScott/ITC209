@@ -72,7 +72,6 @@ public class SearchResultsFragment extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         FoodAdapter foodAdapter = new FoodAdapter(foods);
         recyclerView.setAdapter(foodAdapter);
-        foodAdapter.setContext(getContext());
         foodAdapter.setFragment(this);
         resetButtons(view, foodAdapter.getSelected());
         return view;

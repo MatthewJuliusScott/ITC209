@@ -5,11 +5,13 @@ import android.app.NotificationManager;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,13 +50,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DisplaySearchResultsCallBack {
 
     private static final String CHANNEL_ID = "9b7494ad-b68a-4863-b191-c13e981d3b78";
     private FoodController foodController;
     private IntakeController intakeController;
     private ConstraintsController constraintsController;
     private BarChart chart;
+    private ProgressBar progressSpinner;
 
     private void setGraphData() throws Exception {
 
@@ -93,23 +96,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void search(View view) {
+    public void displaySearch(View view) {
         FragmentManager fm = getSupportFragmentManager();
         SearchForFoodFragment fragment = SearchForFoodFragment.newInstance();
         fragment.show(fm, "fragment_search_for_food");
     }
 
-    public void displaySearchResults(View view) {
+    public void search(View view) {
         if (view instanceof TextView) {
             String keyword = ((TextView) view).getText().toString();
-            List<Food> foods = foodController.findFoodsByKeyword(keyword);
-            for (Food food : foods) {
-                System.out.println();
-            }
-            FragmentManager fm = getSupportFragmentManager();
-            SearchResultsFragment fragment = SearchResultsFragment.newInstance(foods);
-            fragment.show(fm, "fragment_search_results");
+            progressSpinner.setVisibility(View.VISIBLE);
+            Handler mHandler = new Handler();
+            foodController.findFoodsByKeyword(keyword, mHandler, getApplicationContext());
         }
+    }
+
+    @Override
+    public void displaySearchResults(List<Food> foods) {
+        progressSpinner.setVisibility(View.GONE);
+        FragmentManager fm = getSupportFragmentManager();
+        SearchResultsFragment fragment = SearchResultsFragment.newInstance(foods);
+        fragment.show(fm, "fragment_search_results");
+    }
+
+    @Override
+    public void cancelSearch() {
+        progressSpinner.setVisibility(View.GONE);
     }
 
     public void editFood(Food food) {
@@ -123,13 +135,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        progressSpinner = findViewById(R.id.progressSpinner);
+        progressSpinner.setVisibility(View.GONE);
+
         // allow networking on the main thread
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
 
-        foodController = new FoodController(getApplicationContext());
+        foodController = new FoodController(getApplicationContext(), this);
         intakeController = new IntakeController(getApplicationContext(), foodController);
         constraintsController = new ConstraintsController(getApplicationContext(), intakeController);
 
@@ -310,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         setGraphData();
 
         List<Notification> notifications = constraintsController.checkTriggers();
-        for (Notification notification : notifications){
+        for (Notification notification : notifications) {
             sendNotification(notification);
         }
     }
@@ -321,7 +336,11 @@ public class MainActivity extends AppCompatActivity {
         fragment.show(fm, "fragment_set_daily_goals_limits");
     }
 
-    public void saveConstraints(Constraints constraints) {
+    public void saveConstraints(Constraints constraints) throws Exception {
         constraintsController.saveConstraints(constraints);
+        List<Notification> notifications = constraintsController.checkTriggers();
+        for (Notification notification : notifications) {
+            sendNotification(notification);
+        }
     }
 }

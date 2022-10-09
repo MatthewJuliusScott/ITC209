@@ -42,6 +42,7 @@ public class ConstraintsDao {
     public void saveConstraints(Constraints constraints) {
         try {
             open();
+            database.delete(TABLE_NAME, null, null);
             ContentValues contentValues = new ContentValues();
             contentValues.put(CALORIES_GOAL, constraints.getCaloriesGoal());
             contentValues.put(FAT_GOAL, constraints.getFatGoal());

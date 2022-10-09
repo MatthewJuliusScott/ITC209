@@ -47,7 +47,7 @@ public class SearchForFoodFragment extends DialogFragment {
             dialog.dismiss();
             FragmentActivity activity = getActivity();
             if (activity instanceof MainActivity) {
-                ((MainActivity) activity).displaySearchResults(editText);
+                ((MainActivity) activity).search(editText);
             }
             return true;
         });
