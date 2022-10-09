@@ -7,13 +7,13 @@ public class NutritionFormatter extends ValueFormatter {
     @Override
     public String getFormattedValue(float value) {
         if (value == (float) Nutrient.PROTEIN.ordinal()) {
-            return "Protein";
+            return "Protein(g)";
         } else if (value == (float) Nutrient.FAT.ordinal()) {
-            return "Fat";
+            return "Fat(g)";
         } else if (value == (float) Nutrient.CARBOHYDRATE.ordinal()) {
-            return "Carbs";
+            return "Carbs(g)";
         } else if (value == (float) Nutrient.CALORIES.ordinal()) {
-            return "Cals";
+            return "Cals(kj)";
         } else {
             return "";
         }
