@@ -3,6 +3,7 @@ package com.itc209.assignment4;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,15 +18,27 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.itc209.assignment4.model.Food;
+
+import java.util.ArrayList;
 
 public class CreateEditFoodFragment extends DialogFragment {
 
     private Food food;
+
+    private PieChart chart;
 
     public CreateEditFoodFragment() {
     }
@@ -179,7 +192,9 @@ public class CreateEditFoodFragment extends DialogFragment {
         // if food details have been filled in
         if (Utils.isNotBlank(name) && Utils.isNotBlank(caloriesStr) && Utils.isNotBlank(proteinStr) && Utils.isNotBlank(carbohydratesStr) && Utils.isNotBlank(fatStr)) {
 
-            food = new Food(name, Integer.parseInt(caloriesStr), Float.parseFloat(proteinStr), Float.parseFloat(carbohydratesStr), Float.parseFloat(fatStr));
+            food = new Food(name, Integer.parseInt(caloriesStr), Float.parseFloat(fatStr), Float.parseFloat(proteinStr), Float.parseFloat(carbohydratesStr) );
+
+            drawChart(view);
 
             // save food button enabled
             addButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
@@ -203,5 +218,31 @@ public class CreateEditFoodFragment extends DialogFragment {
 
         // cancel button
         cancelButton.setOnClickListener(v -> getDialog().dismiss());
+    }
+
+    private void drawChart(View view) {
+        // create the pie chart of the food's nutrition profile
+        chart = view.findViewById(R.id.chart_food);
+        chart.setUsePercentValues(true);
+        chart.getDescription().setEnabled(false);
+        chart.setDrawHoleEnabled(false);
+        chart.setEntryLabelTextSize(18f);
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(food.getCarbohydrates(), "Carbohydrates"));
+        entries.add(new PieEntry(food.getFat(), "Fat"));
+        entries.add(new PieEntry(food.getProtein(), "Protein"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setColors(ContextCompat.getColor(getContext(), R.color.protein), ContextCompat.getColor(getContext(), R.color.fat), ContextCompat.getColor(getContext(), R.color.carbohydrates));
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(16f);
+        data.setValueTextColor(Color.WHITE);
+        chart.setData(data);
+        chart.invalidate();
+
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
     }
 }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -65,23 +66,23 @@ public class MainActivity extends AppCompatActivity {
         values.add(new BarEntry(Nutrient.CARBOHYDRATE.ordinal(), totalFood.getCarbohydrates()));
         values.add(new BarEntry(Nutrient.CALORIES.ordinal(), totalFood.getCalories() / 10f));
 
-        BarDataSet set1;
+        BarDataSet dataSet;
 
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
+            dataSet = (BarDataSet) chart.getData().getDataSetByIndex(0);
+            dataSet.setValues(values);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
             chart.invalidate();
         } else {
-            set1 = new BarDataSet(values, null);
-            set1.setDrawIcons(false);
+            dataSet = new BarDataSet(values, null);
+            dataSet.setDrawIcons(false);
 
-            set1.setColors(new int[]{R.color.protein, R.color.fat, R.color.carbohydrates, R.color.calories}, MainActivity.this);
+            dataSet.setColors(ContextCompat.getColor(getApplicationContext(), R.color.protein), ContextCompat.getColor(getApplicationContext(), R.color.fat), ContextCompat.getColor(getApplicationContext(), R.color.carbohydrates), ContextCompat.getColor(getApplicationContext(), R.color.calories));
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+            dataSets.add(dataSet);
 
             BarData data = new BarData(dataSets);
             data.setDrawValues(false);
@@ -161,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupGraph() {
-        chart = findViewById(R.id.chart1);
+        chart = findViewById(R.id.chart_intake);
 
         chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);

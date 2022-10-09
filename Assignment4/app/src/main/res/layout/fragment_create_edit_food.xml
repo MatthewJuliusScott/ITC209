@@ -168,12 +168,11 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart_food"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/logo" />
+                android:layout_height="400dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
