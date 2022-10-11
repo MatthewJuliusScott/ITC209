@@ -1,4 +1,4 @@
-package com.itc209.assignment4.dao;
+package com.itc209.assignment4.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.itc209.assignment4.model.Constraints;
 
-public class ConstraintsDao {
+public class ConstraintsManager {
 
     public static final String CALORIES_GOAL = "caloriesGoal";
     public static final String FAT_GOAL = "fatGoal";
@@ -22,15 +22,15 @@ public class ConstraintsDao {
     public static final String TABLE_NAME = "constraints";
 
     private final Context context;
-    private DatabaseHelper dbHelper;
+    private DatabaseManager dbHelper;
     private SQLiteDatabase database;
 
-    public ConstraintsDao(Context context) {
+    public ConstraintsManager(Context context) {
         this.context = context;
     }
 
-    public ConstraintsDao open() throws SQLException {
-        dbHelper = new DatabaseHelper(context);
+    public ConstraintsManager open() throws SQLException {
+        dbHelper = new DatabaseManager(context);
         database = dbHelper.getWritableDatabase();
         return this;
     }

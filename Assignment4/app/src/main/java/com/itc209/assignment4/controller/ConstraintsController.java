@@ -3,7 +3,7 @@ package com.itc209.assignment4.controller;
 import android.content.Context;
 
 import com.itc209.assignment4.Utils;
-import com.itc209.assignment4.dao.ConstraintsDao;
+import com.itc209.assignment4.database.ConstraintsManager;
 import com.itc209.assignment4.model.Constraints;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Notification;
@@ -14,12 +14,12 @@ import java.util.List;
 
 public class ConstraintsController {
 
-    private final ConstraintsDao constraintDao;
+    private final ConstraintsManager constraintDao;
 
     private final IntakeController intakeController;
 
     public ConstraintsController(Context context, IntakeController intakeController) {
-        this.constraintDao = new ConstraintsDao(context);
+        this.constraintDao = new ConstraintsManager(context);
         this.intakeController = intakeController;
     }
 
@@ -31,7 +31,11 @@ public class ConstraintsController {
         constraintDao.saveConstraints(constraints);
     }
 
-    public List<Notification> checkTriggers() throws Exception {
+    /**
+     * Checks if any of the constraints have been exceeded and generates the notifications
+     * @return a list of notifications to send to the User
+     */
+    public List<Notification> checkTriggers() {
         List<Notification> notifications = new ArrayList<>();
         Constraints constraints = getConstraints();
         Food totalFood = intakeController.getTotalFood(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));

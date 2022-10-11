@@ -200,8 +200,12 @@ public class CreateEditFoodFragment extends DialogFragment {
         return view;
     }
 
+    /**
+     * Resets the save and cancel button based on the user's input, including the onClick
+     * @param view the fragment main view
+     */
     public void resetButtons(View view) {
-        Button addButton = view.findViewById(R.id.button_create_edit_food_save);
+        Button saveButton = view.findViewById(R.id.button_create_edit_food_save);
         Button cancelButton = view.findViewById(R.id.button_create_edit_food_cancel);
 
         String name = ((EditText) view.findViewById(R.id.txt_name)).getText().toString();
@@ -256,9 +260,9 @@ public class CreateEditFoodFragment extends DialogFragment {
             chart.invalidate();
 
             // save food button enabled
-            addButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
-            addButton.setEnabled(true);
-            addButton.setOnClickListener(v -> {
+            saveButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.positive, null)));
+            saveButton.setEnabled(true);
+            saveButton.setOnClickListener(v -> {
                 FragmentActivity activity = getActivity();
                 if (activity instanceof MainActivity) {
                     try {
@@ -274,8 +278,8 @@ public class CreateEditFoodFragment extends DialogFragment {
             });
         } else {
             // save button disabled
-            addButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
-            addButton.setEnabled(false);
+            saveButton.setBackgroundTintList(ColorStateList.valueOf(ResourcesCompat.getColor(getResources(), R.color.disabled, null)));
+            saveButton.setEnabled(false);
         }
 
         // cancel button

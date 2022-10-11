@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements DisplaySearchResu
     private BarChart chart;
     private ProgressBar progressSpinner;
 
-    private void setGraphData() throws Exception {
+    private void setGraphData() {
 
         Food totalFood = intakeController.getTotalFood(Utils.dayStart(new Date()), Utils.dayEnd(new Date()));
         ArrayList<BarEntry> values = new ArrayList<>();
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements DisplaySearchResu
         progressSpinner.setVisibility(View.GONE);
     }
 
-    public void editFood(Food food) {
+    public void displayEditFood(Food food) {
         FragmentManager fm = getSupportFragmentManager();
         CreateEditFoodFragment fragment = CreateEditFoodFragment.newInstance(food);
         fragment.show(fm, "fragment_create_edit_food");
@@ -253,6 +253,10 @@ public class MainActivity extends AppCompatActivity implements DisplaySearchResu
         button.setMaxWidth(displayMetrics.widthPixels / 4);
     }
 
+    /**
+     * Sends a notification to the User, setting the icon type and channel
+     * @param notification
+     */
     public void sendNotification(Notification notification) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(notification.getTitle())
@@ -289,13 +293,22 @@ public class MainActivity extends AppCompatActivity implements DisplaySearchResu
         }
     }
 
+    /**
+     * Displays the add food to intake fragment to choose between search or create new
+     *
+     * @param view the button bound to this method with onClick()
+     */
     public void displayAddFoodToIntake(View view) {
         FragmentManager fm = getSupportFragmentManager();
         AddFoodToIntakeFragment fragment = AddFoodToIntakeFragment.newInstance();
         fragment.show(fm, "fragment_add_food_to_intake");
     }
 
-    public void removeFoodFromIntake(View view) throws Exception {
+    /**
+     * Removes the selected food in the removeIntakeRecyclerView from the daily intake
+     * @param view the remove button
+     */
+    public void removeFoodFromIntake(View view) {
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
         if (intakeAdapter != null) {
@@ -312,30 +325,47 @@ public class MainActivity extends AppCompatActivity implements DisplaySearchResu
         }
     }
 
-    public void addFoodToIntake(Food food) throws Exception {
+    /**
+     * Adds a food to the intake and updates the view and notifications
+     *
+     * @param food to add to intake
+     */
+    public void addFoodToIntake(Food food) {
+        // save the food contained within the intake
         foodController.saveFood(food);
+
+        // save the intake with the current time
         Intake intake = new Intake(new Date(), food);
         intakeController.saveIntake(intake);
+
         // add the new intake to the view
         RecyclerView removeIntakeRecyclerView = findViewById(R.id.removeIntakeRecyclerView);
         IntakeAdapter intakeAdapter = (IntakeAdapter) removeIntakeRecyclerView.getAdapter();
         if (intakeAdapter != null) {
             intakeAdapter.add(intake);
         }
+
+        // update the graph
         setGraphData();
 
+        // check constraint triggers and notify the user
         List<Notification> notifications = constraintsController.checkTriggers();
         for (Notification notification : notifications) {
             sendNotification(notification);
         }
     }
 
-    public void setDailyGoals(View view) {
+    public void displaySetDailyGoals(View view) {
         FragmentManager fm = getSupportFragmentManager();
         DailyGoalsLimitsFragment fragment = DailyGoalsLimitsFragment.newInstance(constraintsController.getConstraints());
         fragment.show(fm, "fragment_set_daily_goals_limits");
     }
 
+    /**
+     * Saves the contraints (goals/limits) and checks if any are triggered and sends the User notifications
+     * @param constraints
+     * @throws Exception
+     */
     public void saveConstraints(Constraints constraints) throws Exception {
         constraintsController.saveConstraints(constraints);
         List<Notification> notifications = constraintsController.checkTriggers();

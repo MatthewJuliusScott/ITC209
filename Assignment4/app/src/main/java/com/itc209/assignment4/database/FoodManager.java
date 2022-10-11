@@ -1,4 +1,4 @@
-package com.itc209.assignment4.dao;
+package com.itc209.assignment4.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,7 +11,7 @@ import com.itc209.assignment4.model.Food;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodDao {
+public class FoodManager {
 
     public static final String NAME = "name";
     public static final String CALORIES = "calories";
@@ -20,15 +20,15 @@ public class FoodDao {
     public static final String CARBOHYDRATES = "carbohydrates";
     public static final String TABLE_NAME = "food";
     private final Context context;
-    private DatabaseHelper dbHelper;
+    private DatabaseManager dbHelper;
     private SQLiteDatabase database;
 
-    public FoodDao(Context context) {
+    public FoodManager(Context context) {
         this.context = context;
     }
 
-    public FoodDao open() throws SQLException {
-        dbHelper = new DatabaseHelper(context);
+    public FoodManager open() throws SQLException {
+        dbHelper = new DatabaseManager(context);
         database = dbHelper.getWritableDatabase();
         return this;
     }

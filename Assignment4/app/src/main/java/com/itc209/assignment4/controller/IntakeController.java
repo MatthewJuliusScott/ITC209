@@ -2,7 +2,7 @@ package com.itc209.assignment4.controller;
 
 import android.content.Context;
 
-import com.itc209.assignment4.dao.IntakeDao;
+import com.itc209.assignment4.database.IntakeManager;
 import com.itc209.assignment4.model.Food;
 import com.itc209.assignment4.model.Intake;
 
@@ -12,29 +12,29 @@ import java.util.List;
 public class IntakeController {
 
     private final Context context;
-    private final IntakeDao intakeDao;
+    private final IntakeManager intakeManager;
     FoodController foodController;
 
     public IntakeController(Context context, FoodController foodController) {
         super();
         this.context = context;
         this.foodController = foodController;
-        this.intakeDao = new IntakeDao(this.context, foodController.getFoodDao());
+        this.intakeManager = new IntakeManager(this.context, foodController.getFoodDao());
     }
 
-    public List<Intake> getIntakesByTime(Date start, Date end) throws Exception {
-        return intakeDao.findIntakesByTime(start, end);
+    public List<Intake> getIntakesByTime(Date start, Date end) {
+        return intakeManager.findIntakesByTime(start, end);
     }
 
     public void deleteIntake(Date date, String foodName) {
-        intakeDao.deleteIntake(date, foodName);
+        intakeManager.deleteIntake(date, foodName);
     }
 
     public void saveIntake(Intake intake) {
-        intakeDao.saveIntake(intake);
+        intakeManager.saveIntake(intake);
     }
 
-    public Food getTotalFood(Date start, Date end) throws Exception {
+    public Food getTotalFood(Date start, Date end) {
         List<Intake> intakes = getIntakesByTime(start, end);
         Food total = new Food();
         total.setName("total");

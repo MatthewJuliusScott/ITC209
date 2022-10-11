@@ -54,7 +54,7 @@ public class AddFoodToIntakeFragment extends DialogFragment {
             dialog.dismiss();
             FragmentActivity activity = getActivity();
             if (activity instanceof MainActivity) {
-                ((MainActivity) activity).editFood(null);
+                ((MainActivity) activity).displayEditFood(null);
             }
         });
 

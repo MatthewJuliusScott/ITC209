@@ -1,4 +1,4 @@
-package com.itc209.assignment4.dao;
+package com.itc209.assignment4.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,23 +12,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class IntakeDao {
+public class IntakeManager {
 
     public static final String TIME = "time";
     public static final String FOOD_NAME = "foodName";
     public static final String TABLE_NAME = "intake";
     private final Context context;
-    FoodDao foodDao;
-    private DatabaseHelper dbHelper;
+    FoodManager foodDao;
+    private DatabaseManager dbHelper;
     private SQLiteDatabase database;
 
-    public IntakeDao(Context context, FoodDao foodDao) {
+    public IntakeManager(Context context, FoodManager foodDao) {
         this.context = context;
         this.foodDao = foodDao;
     }
 
-    public IntakeDao open() throws SQLException {
-        dbHelper = new DatabaseHelper(context);
+    public IntakeManager open() throws SQLException {
+        dbHelper = new DatabaseManager(context);
         database = dbHelper.getWritableDatabase();
         return this;
     }
@@ -37,7 +37,7 @@ public class IntakeDao {
         dbHelper.close();
     }
 
-    public List<Intake> findIntakesByTime(Date start, Date end) throws Exception {
+    public List<Intake> findIntakesByTime(Date start, Date end) {
         try {
             open();
             List<Intake> intakes = new ArrayList<>();
@@ -63,7 +63,6 @@ public class IntakeDao {
         } finally {
             close();
         }
-
     }
 
     public void saveIntake(Intake intake) {

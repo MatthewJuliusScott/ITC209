@@ -107,7 +107,7 @@ public class SearchResultsFragment extends DialogFragment {
                 FragmentActivity activity = getActivity();
                 if (activity instanceof MainActivity) {
                     try {
-                        ((MainActivity) activity).editFood(foods.get(selected));
+                        ((MainActivity) activity).displayEditFood(foods.get(selected));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

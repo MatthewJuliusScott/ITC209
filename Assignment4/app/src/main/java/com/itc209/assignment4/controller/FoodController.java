@@ -2,12 +2,10 @@ package com.itc209.assignment4.controller;
 
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.itc209.assignment4.DisplaySearchResultsCallBack;
-import com.itc209.assignment4.dao.FoodDao;
+import com.itc209.assignment4.database.FoodManager;
 import com.itc209.assignment4.model.Food;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -21,29 +19,34 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class FoodController {
 
     private final Context context;
-    private FoodDao foodDao;
-    private DisplaySearchResultsCallBack mainClass;
+    private FoodManager foodManager;
+    private final DisplaySearchResultsCallBack mainClass;
 
     public FoodController(Context context, DisplaySearchResultsCallBack mainClass) {
         this.context = context;
         this.mainClass = mainClass;
-        setFoodDao(new FoodDao(this.context));
+        setFoodDao(new FoodManager(this.context));
     }
 
-    public FoodDao getFoodDao() {
-        return foodDao;
+    public FoodManager getFoodDao() {
+        return foodManager;
     }
 
-    public void setFoodDao(FoodDao foodDao) {
-        this.foodDao = foodDao;
+    public void setFoodDao(FoodManager foodManager) {
+        this.foodManager = foodManager;
     }
 
+    /**
+     * Sends a GET request to the Chomp food API if network is available and joins it with matching results from internal database
+     * @param keyword the search term
+     * @param mHandler the Handler for this async task
+     * @param mContext the application context
+     */
     public void findFoodsByKeyword(String keyword, Handler mHandler, Context mContext) {
 
         Set<Food> foods = new HashSet<>();
@@ -124,7 +127,7 @@ public class FoodController {
                         }
 
                         // add any matching foods from internal database
-                        foods.addAll(foodDao.findFoodsByKeyword(keyword));
+                        foods.addAll(foodManager.findFoodsByKeyword(keyword));
 
                         mainClass.displaySearchResults(new ArrayList<>(foods));
                     });
@@ -137,10 +140,10 @@ public class FoodController {
 
 
         public void deleteFood (Food food){
-            foodDao.deleteFoodByName(food.getName());
+            foodManager.deleteFoodByName(food.getName());
         }
 
         public void saveFood (Food food){
-            foodDao.saveFood(food);
+            foodManager.saveFood(food);
         }
     }

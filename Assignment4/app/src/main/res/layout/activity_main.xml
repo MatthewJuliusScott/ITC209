@@ -174,7 +174,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:backgroundTint="@color/neutral"
                     android:maxLines="1"
-                    android:onClick="setDailyGoals"
+                    android:onClick="displaySetDailyGoals"
                     android:text="@string/button_set_daily_goals"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
